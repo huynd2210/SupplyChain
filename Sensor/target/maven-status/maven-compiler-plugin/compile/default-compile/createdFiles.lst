@@ -1,0 +1,6 @@
+sensor\Sensor.class
+main.class
+pojo\Item.class
+client\UDPSocketClient.class
+configuration\ClientCliParameters.class
+configuration\ClientDefaults.class
