@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  laden:
+    image: laden:1.0
+    container_name: laden
+    ports:
+    - 6543/udp
+  sensor:
+    image: sensor:1.0
+    depends_on:
+      - laden
+    deploy:
+      replicas: 5

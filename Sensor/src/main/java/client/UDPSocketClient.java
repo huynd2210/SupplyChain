@@ -93,7 +93,7 @@ public class UDPSocketClient {
     }
 
     public void sendMsgCustomDefault(String msg){
-        sendMsgCustom(msg, "172.17.0.2", 6543);
+        sendMsgCustom(msg, "laden", 6543);
     }
 
     public void sendMsgCustom(String msg, String address, int port){
