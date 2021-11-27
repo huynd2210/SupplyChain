@@ -15,7 +15,7 @@
     <bytecodeTargetLevel>
       <module name="DemoCase" target="1.8" />
       <module name="Laden" target="1.8" />
-      <module name="Sensor" target="1.8" />
+      <module name="Sensor" target="9" />
       <module name="SupplyChain" target="1.8" />
     </bytecodeTargetLevel>
   </component>

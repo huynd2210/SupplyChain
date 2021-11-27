@@ -39,7 +39,7 @@ public abstract class ClientDefaults {
     /** The default message sent to the server. */
     public static final String MESSAGE = "Hello World";
     /** The default host to connect to. */
-    public static final String DST_HOST = "localhost";
+    public static final String DST_HOST = "0.0.0.0";
 
     /**
      * Private constructor to hide the implicit public one

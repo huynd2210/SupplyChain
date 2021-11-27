@@ -1,13 +1,15 @@
 package democase;
 
-import sensor.Sensor;
+import Laden.Laden;
 import server.UDPSocketServer;
 
 public class main {
     public static void main(String[] args) {
-        UDPSocketServer udpSocketServer = new UDPSocketServer();
-        System.out.println("asasdsadadsiuhhu");
 
-        udpSocketServer.run();
+        Laden laden = new Laden();
+
+        System.out.println("Starting Laden Server");
+
+        laden.run();
     }
 }

@@ -1,3 +1,6 @@
 configuration\ServerCliParameters.class
-configuration\ServerDefaults.class
 server\UDPSocketServer.class
+main.class
+Laden\Laden.class
+configuration\ServerDefaults.class
+configuration\ServerCliParser.class

@@ -1,3 +1,10 @@
 
-A
-java:S1068"&Remove this unused "id" private field.(æ¨ç†8ì£ÿ‡Ñ/
+T
+java:S2629>"7Use the built-in formatting to construct this argument.(·Ïãå8¼ÿòÓ/
+c
+java:S3457:"AFormat specifiers should be used instead of string concatenation.(ôòš¤ûÿÿÿÿ8É•õòÓ/
+”
+java:S1130)"wRemove the declaration of thrown exception 'java.lang.InterruptedException', as it cannot be thrown from method's body.(ÚœÀŠ8²™İòÓ/
+^
+java:S3457>"AFormat specifiers should be used instead of string concatenation.(·Ïãå8¼ÿòÓ/
+Z	java:S106*"9Replace this use of System.out or System.err by a logger.(ÎÇ£¬úÿÿÿÿ8Õ±ˆÓÔ/

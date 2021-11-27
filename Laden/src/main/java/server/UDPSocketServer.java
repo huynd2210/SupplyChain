@@ -21,15 +21,13 @@
  */
 package server;
 
+import Laden.Laden;
 import configuration.ServerCliParameters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.Arrays;
 
 /**
@@ -41,19 +39,29 @@ import java.util.Arrays;
  */
 public class UDPSocketServer {
 
-    /** The logger. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UDPSocketServer.class);
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(UDPSocketServer.class);
 
-    /** A buffer array to store the datagram information. */
+    /**
+     * A buffer array to store the datagram information.
+     */
     private byte[] buf;
-    /** States the server running. */
+    /**
+     * States the server running.
+     */
     private boolean running = true;
+
+    private Laden subscriber;
 
     /**
      * Default constructor that initializes the UDP
      * buffer byte array with the given buffer size.
      */
-    public UDPSocketServer() {
+    public UDPSocketServer(Laden subscriber) {
+        this.subscriber = subscriber;
+
         // Initialize the UDP buffer.
         buf = new byte[ServerCliParameters.getInstance().getBufferSize()];
     }
@@ -61,22 +69,27 @@ public class UDPSocketServer {
     /**
      * Method that creates the UDP socket and continuously receives
      * the data from the UDP socket and logs the datagram information.
-     *
+     * <p>
      * You may simplify the try-catch-finally block by using a
      * try-with-resources statement for creating the socket, i.e.
      * try (DatagramSocket udpSocket = new DatagramSocket(..)) {..}.
-     *
+     * <p>
      * You may also want to separate socket creation and
      * package reception into multiple methods, like createSocket()
      * and receiveMsg();
      */
     public void run() {
-
         // Create the UDP datagram socket.
-        try ( DatagramSocket udpSocket = new DatagramSocket(ServerCliParameters.getInstance().getPort()) ) {
-            LOGGER.info("Started the UDP socket server at port {} with buffer size {}.",
-                    ServerCliParameters.getInstance().getPort(),
-                    buf.length);
+        try {
+            DatagramSocket udpSocket = new DatagramSocket(null);
+            int port = ServerCliParameters.getInstance().getPort();
+            InetSocketAddress address = new InetSocketAddress(port);
+            udpSocket.bind(address);
+            System.out.println("Server started at " + address.toString() + " port " + port);
+            System.out.println();
+//            LOGGER.info("Started the UDP socket server at port {} with buffer size {}.",
+//                    ServerCliParameters.getInstance().getPort(),
+//                    buf.length);
             // Receive packets continuously.
             while (running) {
                 // Create the datagram packet structure that contains the received datagram information.
@@ -84,14 +97,14 @@ public class UDPSocketServer {
 
                 // Receive message
                 udpSocket.receive(udpPacket);
-
                 //Print some packet data.
-                printPacketData(udpPacket);
+                String data = extractData(udpPacket);
+                this.subscriber.receive(data);
             }
         } catch (SocketException e) {
             LOGGER.error("Could not start the UDP socket server.\n{}", e);
         } catch (IOException e) {
-           LOGGER.error("Could not receive packet.\n{}", e);
+            LOGGER.error("Could not receive packet.\n{}", e);
         }
 
     }
@@ -110,7 +123,7 @@ public class UDPSocketServer {
      *
      * @param udpPacket The datagram packet to extract and print.
      */
-    private void printPacketData(DatagramPacket udpPacket) {
+    private String extractData(DatagramPacket udpPacket) {
         // Get IP address and port.
         InetAddress address = udpPacket.getAddress();
         int port = udpPacket.getPort();
@@ -119,6 +132,7 @@ public class UDPSocketServer {
         // Get the payload from the buffer. Mind the buffer size and the packet length!
         byte[] playload = Arrays.copyOfRange(udpPacket.getData(), 0, length);
         // Print the packet information.
-        System.out.println("Received a packet: IP:Port: " + address + ":" + port + ", length: " + length + ", payload: " + new String(playload));
+        // System.out.println("Received a packet: IP:Port: " + address + ":" + port + ", length: " + length + ", payload: " + new String(playload));
+        return new String(playload);
     }
 }

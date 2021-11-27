@@ -23,8 +23,10 @@ package client;
 
 import configuration.ClientCliParameters;
 import configuration.ClientDefaults;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.io.IOException;
 import java.net.*;
@@ -36,10 +38,11 @@ import java.net.*;
  *
  * @author Michael Bredel
  */
+@Getter
 public class UDPSocketClient {
 
     /** The logger. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UDPSocketClient.class);
+    private static final Logger LOGGER = LogManager.getLogger(UDPSocketClient.class);
 
     /** The IP address the client connects to. */
     private InetAddress address;
@@ -70,15 +73,38 @@ public class UDPSocketClient {
      * @param msg The String message to transmit.
      */
     public void sendMsg(String msg) {
-
         // Create the UDP datagram socket.
         try (DatagramSocket udpSocket = new DatagramSocket()) {
             LOGGER.info("Started the UDP socket that connects to {}.", address.getHostAddress());
-
+            System.out.println("Started the UDP socket that connects to {}." + address.getHostAddress());
             // Convert the message into a byte-array.
             byte[] buf = msg.getBytes();
             // Create a new UDP packet with the byte-array as payload.
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, ClientCliParameters.getInstance().getPort());
+
+            // Send the data.
+            udpSocket.send(packet);
+            LOGGER.info("Message sent with payload: {}", msg);
+        } catch (SocketException e) {
+            LOGGER.error("Could not start the UDP socket server.\n{}", e.getLocalizedMessage());
+        } catch (IOException e) {
+            LOGGER.error("Could not send data.\n{}", e);
+        }
+    }
+
+    public void sendMsgCustomDefault(String msg){
+        sendMsgCustom(msg, "172.17.0.2", 6543);
+    }
+
+    public void sendMsgCustom(String msg, String address, int port){
+        // Create the UDP datagram socket.
+        try (DatagramSocket udpSocket = new DatagramSocket()) {
+            LOGGER.info("Started the UDP socket that connects to {}.", address);
+            System.out.println("Started the UDP socket that connects to {}." + address);
+            // Convert the message into a byte-array.
+            byte[] buf = msg.getBytes();
+            // Create a new UDP packet with the byte-array as payload.
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(address), port);
 
             // Send the data.
             udpSocket.send(packet);

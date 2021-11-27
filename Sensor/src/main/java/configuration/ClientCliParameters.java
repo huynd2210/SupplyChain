@@ -21,6 +21,8 @@
  */
 package configuration;
 
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -31,6 +33,7 @@ import java.util.List;
  *
  * @author Michael Bredel
  */
+@Getter
 public class ClientCliParameters {
 
     /** The one and only instance of CLI parameters. */

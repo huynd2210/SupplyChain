@@ -31,6 +31,7 @@ public abstract class ServerDefaults {
 
     /** The default port of the UDP socket server. */
     public static final int PORT = 6543;
+//    public static final String ADDRESS = "192.168.1.1";
     /** The default UDP buffer size. */
     public static final int BUFFER_SIZE = 256;
     /** The exit code if the procedure succeeded. */

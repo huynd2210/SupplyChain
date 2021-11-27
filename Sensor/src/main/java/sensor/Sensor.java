@@ -4,10 +4,12 @@ import client.UDPSocketClient;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pojo.Item;
+import pojo.ItemList;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Data
@@ -15,19 +17,51 @@ import java.util.UUID;
 public class Sensor {
     private String id;
     private UDPSocketClient udpSocket;
-    private static final Logger logger = LoggerFactory.getLogger(Sensor.class);
+    private boolean isIn;
+    private Random r;
+    private static final Logger logger = LogManager.getLogger(Sensor.class);
+    private static final int iterationCount = 1000;
 
-    public Sensor(){
+    public Sensor() {
+        this.r = new Random();
         this.id = UUID.randomUUID().toString();
         this.udpSocket = new UDPSocketClient();
+        this.isIn = r.nextBoolean();
     }
 
-    public void scanItem(){
-        Item itemToSend = new Item("123", "book");
-        Gson gson = new Gson();
-        String data = gson.toJson(itemToSend);
-        logger.info("Scanning item : " + itemToSend.getName() + "with id :" + itemToSend.getId());
-        udpSocket.sendMsg(data);
+    private Item generateItem() {
+        return new Item(UUID.randomUUID().toString(), getRandomItemName());
+    }
+
+    private String getRandomItemName(){
+        int itemIndex = r.nextInt(ItemList.list.size());
+        return ItemList.list.get(itemIndex);
+    }
+
+    public void simulate() throws InterruptedException {
+        System.out.println("simulating");
+        int i = 0;
+        while (i < iterationCount){
+            this.isIn = r.nextBoolean();
+            scanItem();
+            i++;
+        }
+    }
+
+    private void scanItem() {
+        if (this.isIn()){
+            Item itemToSend = generateItem();
+            Gson gson = new Gson();
+            String data = "send$" +
+                    gson.toJson(itemToSend);
+
+            logger.info("Scanning item : " + itemToSend.getName() + "with id :" + itemToSend.getId());
+            udpSocket.sendMsgCustomDefault(data);
+        }else{
+            String data = "remove$" + getRandomItemName();
+            logger.info("Removing item: " + data + " from storage");
+            udpSocket.sendMsgCustomDefault(data);
+        }
     }
 
 }
