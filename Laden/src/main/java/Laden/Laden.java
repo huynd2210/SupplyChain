@@ -7,16 +7,20 @@ import server.UDPSocketServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class Laden {
     private UDPSocketServer udpSocketServer;
     private List<Item> inventory;
     private Gson gson;
+    private String id;
+
     public Laden(){
         this.udpSocketServer = new UDPSocketServer(this);
         this.inventory = new ArrayList<>();
         this.gson = new Gson();
+        this.id = UUID.randomUUID().toString();
     }
 
     public void run(){

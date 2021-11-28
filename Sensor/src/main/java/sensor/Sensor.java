@@ -20,7 +20,7 @@ public class Sensor {
     private boolean isIn;
     private Random r;
     private static final Logger logger = LogManager.getLogger(Sensor.class);
-    private static final int iterationCount = 1000;
+    private static final int iterationCount = 10;
 
     public Sensor() {
         this.r = new Random();
@@ -33,23 +33,24 @@ public class Sensor {
         return new Item(UUID.randomUUID().toString(), getRandomItemName());
     }
 
-    private String getRandomItemName(){
+    private String getRandomItemName() {
         int itemIndex = r.nextInt(ItemList.list.size());
         return ItemList.list.get(itemIndex);
     }
 
     public void simulate() throws InterruptedException {
-        System.out.println("simulating");
+        System.out.println("Simulating sensor with id: " + this.id.substring(0, 4));
         int i = 0;
-        while (i < iterationCount){
+        while (i < iterationCount) {
             this.isIn = r.nextBoolean();
+            Thread.sleep(500);
             scanItem();
             i++;
         }
     }
 
     private void scanItem() {
-        if (this.isIn()){
+        if (this.isIn()) {
             Item itemToSend = generateItem();
             Gson gson = new Gson();
             String data = "send$" +
@@ -57,7 +58,7 @@ public class Sensor {
 
             logger.info("Scanning item : " + itemToSend.getName() + "with id :" + itemToSend.getId());
             udpSocket.sendMsgCustomDefault(data);
-        }else{
+        } else {
             String data = "remove$" + getRandomItemName();
             logger.info("Removing item: " + data + " from storage");
             udpSocket.sendMsgCustomDefault(data);

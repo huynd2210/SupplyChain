@@ -6,7 +6,7 @@ public class main {
         ServerCliParser.parse(args);
         Laden laden = new Laden();
 
-        System.out.println("Starting Laden Server");
+        System.out.println("Starting Laden Server with id " + laden.getId());
 
         laden.run();
     }
