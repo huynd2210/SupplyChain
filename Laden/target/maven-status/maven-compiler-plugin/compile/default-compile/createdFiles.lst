@@ -1,6 +1,7 @@
-configuration\ServerCliParameters.class
 server\UDPSocketServer.class
 main.class
 Laden\Laden.class
 configuration\ServerDefaults.class
+server\TCPSocketServer.class
+configuration\ServerCliParameters.class
 configuration\ServerCliParser.class

@@ -1,18 +1,17 @@
 
-H
-java:S1481y",Remove this unused "address" local variable.(ÆíÑ8…×†˜Ó/
-N
-java:S1128"1Remove this unused import 'com.google.gson.Gson'.(–§8¨ºäóÓ/
 0
-java:S3457d"Not enough arguments.(±ã¯§üÿÿÿÿ
-U
-java:S1854z"8Remove this useless assignment to local variable "port".(»ò†Ê8…×†˜Ó/
+java:S3457k"Not enough arguments.(±ã¯§üÿÿÿÿ
+G
+java:S1481")Remove this unused "port" local variable.(»ò†Ê8…×†˜Ó/
+Z	java:S106X"9Replace this use of System.out or System.err by a logger.(î—Œøÿÿÿÿ8çéšÖ/
+Y	java:S125‡"<This block of commented-out lines of code should be removed.(Îéñ8…×†˜Ó/
 0
-java:S3457b"Not enough arguments.(‘¹¥üÿÿÿÿ
-Y	java:S125€"<This block of commented-out lines of code should be removed.(Îéñ8…×†˜Ó/
-H
-java:S1128$"&Remove this unused import 'pojo.Item'.(åÊ“ùÿÿÿÿ8ãçÆóÓ/
-W
-java:S1854y";Remove this useless assignment to local variable "address".(ÆíÑ8…×†˜Ó/
-F
-java:S1481z")Remove this unused "port" local variable.(»ò†Ê8…×†˜Ó/
+java:S3457i"Not enough arguments.(‘¹¥üÿÿÿÿ
+Z	java:S106Y"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ8È°·›Ö/
+V
+java:S1854"8Remove this useless assignment to local variable "port".(»ò†Ê8…×†˜Ó/
+X	java:S125\"<This block of commented-out lines of code should be removed.(ÿş ß8–ˆ¹›Ö/
+X
+java:S1854€";Remove this useless assignment to local variable "address".(ÆíÑ8…×†˜Ó/
+I
+java:S1481€",Remove this unused "address" local variable.(ÆíÑ8…×†˜Ó/

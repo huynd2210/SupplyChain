@@ -1,10 +1,22 @@
 
-T
-java:S2629>"7Use the built-in formatting to construct this argument.(·Ïãå8¼ÿòÓ/
-c
-java:S3457:"AFormat specifiers should be used instead of string concatenation.(ôòš¤ûÿÿÿÿ8É•õòÓ/
-”
-java:S1130)"wRemove the declaration of thrown exception 'java.lang.InterruptedException', as it cannot be thrown from method's body.(ÚœÀŠ8²™İòÓ/
+Z	java:S106C"9Replace this use of System.out or System.err by a logger.(Ç¥ú¾ùÿÿÿÿ8’À¼çÖ/
 ^
-java:S3457>"AFormat specifiers should be used instead of string concatenation.(·Ïãå8¼ÿòÓ/
-Z	java:S106*"9Replace this use of System.out or System.err by a logger.(ÎÇ£¬úÿÿÿÿ8Õ±ˆÓÔ/
+java:S3457H"AFormat specifiers should be used instead of string concatenation.(·Ïãå8’ÿ¾Ö/
+O
+java:S1144M"-Remove this unused private "writeLog" method.(¬Íâ½üÿÿÿÿ8È•çÖ/
+\	java:S899X";Do something with the "boolean" value returned by "delete".(²Œ­ûÿÿÿÿ8²òŸçÖ/
+W	java:S125O"<This block of commented-out lines of code should be removed.(²¢ş_8¾ï¬çÖ/
+”
+java:S1130-"wRemove the declaration of thrown exception 'java.lang.InterruptedException', as it cannot be thrown from method's body.(ÚœÀŠ8Äé•çÖ/
+I
+java:S1481B",Remove this unused "scanLog" local variable.(†»¢ó8ú­½çÖ/
+X
+java:S1854B";Remove this useless assignment to local variable "scanLog".(†»¢ó8ú­½çÖ/
+W	java:S1255"<This block of commented-out lines of code should be removed.(ÉÚ’k8Äé•çÖ/
+^
+java:S1075N"ARefactor your code to get this URI from a customizable parameter.(ûêÎ´8”²§çÖ/
+p
+java:S4042X"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(²Œ­ûÿÿÿÿ8²òŸçÖ/
+U	java:S106."9Replace this use of System.out or System.err by a logger.(ô¿‡§8Õ±ˆÓÔ/
+T
+java:S2629H"7Use the built-in formatting to construct this argument.(·Ïãå8’ÿ¾Ö/

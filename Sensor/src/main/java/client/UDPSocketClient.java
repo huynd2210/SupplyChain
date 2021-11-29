@@ -75,8 +75,6 @@ public class UDPSocketClient {
     public void sendMsg(String msg) {
         // Create the UDP datagram socket.
         try (DatagramSocket udpSocket = new DatagramSocket()) {
-            LOGGER.info("Started the UDP socket that connects to {}.", address.getHostAddress());
-            System.out.println("Started the UDP socket that connects to {}." + address.getHostAddress());
             // Convert the message into a byte-array.
             byte[] buf = msg.getBytes();
             // Create a new UDP packet with the byte-array as payload.
@@ -84,7 +82,6 @@ public class UDPSocketClient {
 
             // Send the data.
             udpSocket.send(packet);
-            LOGGER.info("Message sent with payload: {}", msg);
         } catch (SocketException e) {
             LOGGER.error("Could not start the UDP socket server.\n{}", e.getLocalizedMessage());
         } catch (IOException e) {
@@ -93,14 +90,13 @@ public class UDPSocketClient {
     }
 
     public void sendMsgCustomDefault(String msg){
-        sendMsgCustom(msg, "laden", 6543);
+        sendMsgCustom(msg, "localhost", 6543);
     }
 
     public void sendMsgCustom(String msg, String address, int port){
         // Create the UDP datagram socket.
         try (DatagramSocket udpSocket = new DatagramSocket()) {
             LOGGER.info("Started the UDP socket that connects to {}.", address);
-            System.out.println("Started the UDP socket that connects to {}." + address);
             // Convert the message into a byte-array.
             byte[] buf = msg.getBytes();
             // Create a new UDP packet with the byte-array as payload.

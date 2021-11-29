@@ -9,6 +9,13 @@ import org.apache.logging.log4j.Logger;
 import pojo.Item;
 import pojo.ItemList;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -38,31 +45,66 @@ public class Sensor {
         return ItemList.list.get(itemIndex);
     }
 
-    public void simulate() throws InterruptedException {
+    public void simulate() throws InterruptedException, IOException {
         System.out.println("Simulating sensor with id: " + this.id.substring(0, 4));
         int i = 0;
+        List<String> log = new ArrayList<>();
         while (i < iterationCount) {
             this.isIn = r.nextBoolean();
-            Thread.sleep(500);
-            scanItem();
+//            Thread.sleep(500);
+            log.add(scanItem());
             i++;
         }
+        writeLog("Sensor " + id.substring(0,4) + " log", log);
+
     }
 
-    private void scanItem() {
+    private String scanItem() throws IOException {
         if (this.isIn()) {
             Item itemToSend = generateItem();
             Gson gson = new Gson();
             String data = "send$" +
-                    gson.toJson(itemToSend);
+                    gson.toJson(itemToSend) +
+                    "$" +
+                    this.id.substring(0,4);
 
-            logger.info("Scanning item : " + itemToSend.getName() + "with id :" + itemToSend.getId());
+
+            String scanLog = "Scanning item : " + itemToSend.getName();
+            System.out.println("Scanning item : " + itemToSend.getName());
             udpSocket.sendMsgCustomDefault(data);
+            return scanLog;
         } else {
-            String data = "remove$" + getRandomItemName();
-            logger.info("Removing item: " + data + " from storage");
+            String itemName = getRandomItemName();
+            String data = "remove$" + itemName;
+            String removeLog = "Removing item: " + itemName;
+            System.out.println("Removing item: " + itemName + " from storage");
             udpSocket.sendMsgCustomDefault(data);
+            return removeLog;
         }
+
     }
 
+    private void writeLog(String fileName, List<String> data) throws IOException {
+        String path = "C:\\Woodchop\\SupplyChain\\Sensor\\src\\main\\resources";
+//        deleteFiles(new File(path));
+        FileWriter writer = new FileWriter( path + "\\" + fileName + ".txt");
+        for(String str: data) {
+            writer.write(str + System.lineSeparator());
+        }
+        writer.close();
+    }
+
+    private void deleteFiles(File dirPath) {
+        File[] filesList = dirPath.listFiles();
+        if (filesList.length > 0){
+            for(File file : filesList) {
+                if(file.isFile()) {
+                    file.delete();
+                } else {
+                    deleteFiles(file);
+                }
+            }
+        }
+
+    }
 }

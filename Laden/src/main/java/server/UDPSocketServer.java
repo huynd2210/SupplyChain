@@ -85,7 +85,7 @@ public class UDPSocketServer {
             int port = ServerCliParameters.getInstance().getPort();
             InetSocketAddress address = new InetSocketAddress(port);
             udpSocket.bind(address);
-            System.out.println("Server started at " + address.toString() + " port " + port);
+//            System.out.println("Server started at " + address.toString() + " port " + port);
             System.out.println();
 //            LOGGER.info("Started the UDP socket server at port {} with buffer size {}.",
 //                    ServerCliParameters.getInstance().getPort(),
