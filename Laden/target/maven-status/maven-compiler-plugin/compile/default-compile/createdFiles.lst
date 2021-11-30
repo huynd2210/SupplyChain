@@ -3,5 +3,6 @@ main.class
 Laden\Laden.class
 configuration\ServerDefaults.class
 server\TCPSocketServer.class
+service\LadenService.class
 configuration\ServerCliParameters.class
 configuration\ServerCliParser.class

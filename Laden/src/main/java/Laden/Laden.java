@@ -7,15 +7,15 @@ import server.TCPSocketServer;
 import server.UDPSocketServer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public class Laden {
     private UDPSocketServer udpSocketServer;
     private TCPSocketServer tcpSocketServer;
     private List<Item> inventory;
+    private List<String> logs;
+    private Map<String, List<String>> sensorHistoryData;
     private Gson gson;
     private String id;
 
@@ -23,6 +23,8 @@ public class Laden {
         this.udpSocketServer = new UDPSocketServer(this);
         this.tcpSocketServer = new TCPSocketServer(this);
         this.inventory = new ArrayList<>();
+        this.logs = new ArrayList<>();
+        this.sensorHistoryData = new HashMap<>();
         this.gson = new Gson();
         this.id = UUID.randomUUID().toString();
     }
@@ -39,22 +41,48 @@ public class Laden {
         String[] tokens = data.split("\\$");
 
         if (tokens[0].equalsIgnoreCase("send")){
-            this.getInventory().add(gson.fromJson(tokens[1], Item.class));
-            System.out.println("Item received: " + tokens[1] + " from " + tokens[2] + " current inventory size: " + this.getInventory().size());
+            parseSendRequest(tokens);
         }else if (tokens[0].equalsIgnoreCase("remove")){
-            boolean isFound = false;
-            for (int i = 0; i < this.getInventory().size(); i++) {
-                if (this.getInventory().get(i).getName().equalsIgnoreCase(tokens[1])){
-                    System.out.print("Removing item: " + tokens[1]);
-                    this.getInventory().remove(i);
-                    System.out.println( " current inventory size: " + this.getInventory().size());
-                    isFound = true;
-                    break;
-                }
+            parseRemoveRequest(tokens);
+        }
+    }
+
+    private void parseRemoveRequest(String[] tokens) {
+        boolean isFound = false;
+        for (int i = 0; i < this.getInventory().size(); i++) {
+            if (this.getInventory().get(i).getName().equalsIgnoreCase(tokens[1])){
+                System.out.print("Removing item: " + tokens[1] + " as requested by sensor " + tokens[2]);
+                this.getInventory().remove(i);
+                System.out.println( " current inventory size: " + this.getInventory().size());
+                this.logs.add("Removing item: " + tokens[1] + " as requested by sensor " + tokens[2] + " current inventory size: " + this.getInventory().size());
+                addToHistory(tokens[2], "Removing item " + tokens[1]);
+                isFound = true;
+                break;
             }
-            if (!isFound){
-                System.out.println("Tried to remove " + tokens[1] + " but item was not found in inventory");
-            }
+        }
+        if (!isFound){
+            String failedRemoveLog = "Tried to remove " + tokens[1] + " as requested by sensor " + tokens[2] + " but item was not found in inventory";
+            System.out.println(failedRemoveLog);
+            this.logs.add(failedRemoveLog);
+            addToHistory(tokens[2], "Removing item " + tokens[1]);
+        }
+    }
+
+    private void parseSendRequest(String[] tokens) {
+        this.getInventory().add(gson.fromJson(tokens[1], Item.class));
+        String sendLog = "Item received: " + tokens[1] + " from sensor " + tokens[2] + " current inventory size: " + this.getInventory().size();
+        this.logs.add(sendLog);
+        addToHistory(tokens[2], "Scanning item : " + tokens[1]);
+        System.out.println(sendLog);
+    }
+
+    private void addToHistory(String sensorId, String message){
+        if (this.sensorHistoryData.containsKey(sensorId)){
+            this.sensorHistoryData.get(sensorId).add(message);
+        }else{
+            List<String> tmp = new ArrayList<>();
+            tmp.add(message);
+            this.sensorHistoryData.put(sensorId, tmp);
         }
     }
 }
