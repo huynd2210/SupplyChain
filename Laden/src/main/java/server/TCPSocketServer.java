@@ -81,7 +81,7 @@ public class TCPSocketServer {
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
                 DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
                 // Print the input stream.
-                printInputStream(inFromClient);
+//                printInputStream(inFromClient);
 
                 outToClient.write("HTTP/1.1 200 OK\r\n".getBytes());
                 outToClient.write("\r\n".getBytes());
@@ -119,9 +119,22 @@ public class TCPSocketServer {
     }
 
     private void parseRequest(String urlPath, DataOutputStream outputStream) throws IOException {
+        System.out.println("received: " + urlPath);
+
+        if (urlPath.equalsIgnoreCase("") || urlPath == null){
+            return;
+        }
+
         String[] tokens = urlPath.split(" ");
         String endpoint = tokens[1];
+//        endpoint = endpoint.substring(1);
         String[] subTokens = endpoint.split("/");
+
+        if (subTokens.length == 0){
+            outputStream.write("main".getBytes());
+            return;
+        }
+
         if (endpoint.contains("sensors")){
             Set<String> sensors = this.ladenService.getAllSensorId();
             for (String sensor : sensors) {
@@ -132,22 +145,25 @@ public class TCPSocketServer {
             for (Item item : inventory) {
                 outputStream.write(item.getName().getBytes());
             }
-        }else if (subTokens[0].equalsIgnoreCase("sensor") && subTokens.length >= 2){
-            List<String> sensorData = this.ladenService.getSensorData(subTokens[1]);
+        }else if (subTokens[1].equalsIgnoreCase("sensor") && subTokens.length >= 3){
+            List<String> sensorData = this.ladenService.getSensorData(subTokens[2]);
             for (String sensorDatum : sensorData) {
                 outputStream.write(sensorDatum.getBytes());
             }
-        }else if (subTokens[0].equalsIgnoreCase("history") && subTokens.length == 1){
+        }else if (subTokens[1].equalsIgnoreCase("history") && subTokens.length == 2){
             Map<String, List<String>> history = this.ladenService.getAllSensorHistory();
             StringBuilder sb = new StringBuilder();
             history.forEach((k,v) ->
                     sb.append(k).append("\n").append(v).append("\n")
             );
             outputStream.write(sb.toString().getBytes());
-        }else if (subTokens[0].equalsIgnoreCase("history") && subTokens.length >= 2){
-            if (subTokens[1].equalsIgnoreCase("size")){
-                outputStream.write(this.ladenService.getAllHistoryLogSize());
+        }else if (subTokens[1].equalsIgnoreCase("history") && subTokens.length >= 3){
+            if (subTokens[2].equalsIgnoreCase("size")){
+                String size = Integer.toString(this.ladenService.getAllHistoryLogSize());
+                outputStream.write(size.getBytes());
             }
+        }else{
+            outputStream.write("main".getBytes());
         }
     }
 }

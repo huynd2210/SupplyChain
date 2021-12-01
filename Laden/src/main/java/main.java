@@ -9,7 +9,7 @@ public class main {
         Laden laden = new Laden();
 
         System.out.println("Starting Laden Server with id " + laden.getId());
-
-        laden.run();
+        laden.getTcpSocketServer().run();
+//        laden.run();
     }
 }
