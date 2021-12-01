@@ -21,9 +21,8 @@ package server;
  products derived from this software without specific prior written
  permission.
  */
+
 import Laden.Laden;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import pojo.Item;
 import service.LadenService;
 
@@ -31,7 +30,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,12 +46,18 @@ import java.util.Set;
 public class TCPSocketServer {
 
     /** The logger. */
-    /** The TCP port the server listens to. */
+    /**
+     * The TCP port the server listens to.
+     */
     private static int PORT = 6432;
 
-    /** The TCP server socket used to receive data. */
+    /**
+     * The TCP server socket used to receive data.
+     */
     private ServerSocket tcpServerSocket;
-    /** States the server running. */
+    /**
+     * States the server running.
+     */
     private boolean running = true;
     private final LadenService ladenService;
 
@@ -63,7 +69,7 @@ public class TCPSocketServer {
      * @throws IOException In case the socket cannot be created.
      */
     public TCPSocketServer(Laden laden) throws IOException {
-        tcpServerSocket = new ServerSocket( PORT );
+        tcpServerSocket = new ServerSocket(PORT);
         this.ladenService = new LadenService(laden);
     }
 
@@ -71,9 +77,9 @@ public class TCPSocketServer {
      * Continuously running method that receives the data
      * from the TCP socket and logs the information.
      */
-    public void run()  {
+    public void run() {
         System.out.println("Started TCP Server");
-        while(running) {
+        while (running) {
             Socket connectionSocket = null;
             try {
                 // Open a connection socket, once a client connects to the server socket.
@@ -82,8 +88,6 @@ public class TCPSocketServer {
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
                 DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
                 // Print the input stream.
-//                printInputStream(inFromClient);
-
                 outToClient.write("HTTP/1.1 200 OK\r\n".getBytes());
                 outToClient.write("\r\n".getBytes());
                 parseRequest(inFromClient.readLine(), outToClient);
@@ -122,7 +126,11 @@ public class TCPSocketServer {
     private void parseRequest(String urlPath, DataOutputStream outputStream) throws IOException {
         System.out.println("received: " + urlPath);
 
-        if (urlPath.equalsIgnoreCase("")){
+        if (urlPath.equalsIgnoreCase("")) {
+            return;
+        }
+
+        if (urlPath == null){
             return;
         }
 
@@ -131,39 +139,39 @@ public class TCPSocketServer {
 //        endpoint = endpoint.substring(1);
         String[] subTokens = endpoint.split("/");
 
-        if (subTokens.length == 0){
+        if (subTokens.length == 0) {
             outputStream.write("main".getBytes());
             return;
         }
 
-        if (endpoint.contains("sensors")){
+        if (endpoint.contains("sensors")) {
             Set<String> sensors = this.ladenService.getAllSensorId();
             for (String sensor : sensors) {
                 outputStream.write(sensor.getBytes());
             }
-        }else if (endpoint.contains("inventory")){
+        } else if (endpoint.contains("inventory")) {
             List<Item> inventory = this.ladenService.getAllItemInInventory();
             for (Item item : inventory) {
-                outputStream.write(item.getName().getBytes());
+                outputStream.write((item.getName() + " ").getBytes());
             }
-        }else if (subTokens[1].equalsIgnoreCase("sensor") && subTokens.length >= 3){
+        } else if (subTokens[1].equalsIgnoreCase("sensor") && subTokens.length >= 3) {
             List<String> sensorData = this.ladenService.getSensorData(subTokens[2]);
             for (String sensorDatum : sensorData) {
-                outputStream.write(sensorDatum.getBytes());
+                outputStream.write((sensorDatum + "\n").getBytes());
             }
-        }else if (subTokens[1].equalsIgnoreCase("history") && subTokens.length == 2){
+        } else if (subTokens[1].equalsIgnoreCase("history") && subTokens.length == 2) {
             Map<String, List<String>> history = this.ladenService.getAllSensorHistory();
             StringBuilder sb = new StringBuilder();
-            history.forEach((k,v) ->
+            history.forEach((k, v) ->
                     sb.append(k).append("\n").append(v).append("\n")
             );
             outputStream.write(sb.toString().getBytes());
-        }else if (subTokens[1].equalsIgnoreCase("history") && subTokens.length >= 3){
-            if (subTokens[2].equalsIgnoreCase("size")){
+        } else if (subTokens[1].equalsIgnoreCase("history") && subTokens.length >= 3) {
+            if (subTokens[2].equalsIgnoreCase("size")) {
                 String size = Integer.toString(this.ladenService.getAllHistoryLogSize());
-                outputStream.write(size.getBytes());
+                outputStream.write(("History size: " + size).getBytes());
             }
-        }else{
+        } else {
             outputStream.write("main".getBytes());
         }
     }
