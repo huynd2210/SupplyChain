@@ -29,8 +29,12 @@ public class Laden {
         this.id = UUID.randomUUID().toString();
     }
 
-    public void run(){
+    public void runUDPServer(){
         this.udpSocketServer.run();
+    }
+
+    public void runTCPServer(){
+        this.tcpSocketServer.run();
     }
 
     public void receive(String data){

@@ -72,6 +72,7 @@ public class TCPSocketServer {
      * from the TCP socket and logs the information.
      */
     public void run()  {
+        System.out.println("Started TCP Server");
         while(running) {
             Socket connectionSocket = null;
             try {
@@ -121,7 +122,7 @@ public class TCPSocketServer {
     private void parseRequest(String urlPath, DataOutputStream outputStream) throws IOException {
         System.out.println("received: " + urlPath);
 
-        if (urlPath.equalsIgnoreCase("") || urlPath == null){
+        if (urlPath.equalsIgnoreCase("")){
             return;
         }
 

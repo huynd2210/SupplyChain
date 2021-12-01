@@ -9,7 +9,21 @@ public class main {
         Laden laden = new Laden();
 
         System.out.println("Starting Laden Server with id " + laden.getId());
-        laden.getTcpSocketServer().run();
-//        laden.run();
+
+        Thread udp = new Thread(){
+            public void run(){
+                laden.runUDPServer();
+            }
+        };
+
+        Thread tcp = new Thread(){
+            public void run(){
+                laden.runTCPServer();
+            }
+        };
+
+        udp.start();
+        tcp.start();
+
     }
 }
