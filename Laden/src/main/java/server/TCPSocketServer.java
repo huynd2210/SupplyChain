@@ -171,7 +171,12 @@ public class TCPSocketServer {
                 String size = Integer.toString(this.ladenService.getAllHistoryLogSize());
                 outputStream.write(("History size: " + size).getBytes());
             }
-        } else {
+        }else if (subTokens[1].equalsIgnoreCase("laden")){
+            for (String s : this.ladenService.getLadenLog()) {
+                outputStream.write((s + "\n").getBytes());
+            }
+        }
+        else {
             outputStream.write("main".getBytes());
         }
     }

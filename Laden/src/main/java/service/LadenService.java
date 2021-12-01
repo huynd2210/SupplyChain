@@ -41,4 +41,8 @@ public class LadenService {
         this.laden.getSensorHistoryData().forEach((k,v) -> sum.addAndGet(v.size()));
         return sum.intValue();
     }
+
+    public List<String> getLadenLog(){
+        return this.laden.getLogs();
+    }
 }

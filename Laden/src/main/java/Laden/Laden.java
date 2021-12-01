@@ -68,7 +68,7 @@ public class Laden {
             String failedRemoveLog = "Tried to remove " + tokens[1] + " as requested by sensor " + tokens[2] + " but item was not found in inventory";
             System.out.println(failedRemoveLog);
             this.logs.add(failedRemoveLog);
-            addToHistory(tokens[2], "Removing item " + tokens[1]);
+            addToHistory(tokens[2], "Tried to remove item " + tokens[1] + " but not found in inventory");
         }
     }
 
