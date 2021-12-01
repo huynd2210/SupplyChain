@@ -24,11 +24,17 @@ package server;
 import Laden.Laden;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pojo.Item;
+import service.LadenService;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The actual socket server that creates
@@ -40,16 +46,15 @@ import java.net.*;
 public class TCPSocketServer {
 
     /** The logger. */
-    private static final Logger LOGGER = LogManager.getLogger(TCPSocketServer.class);
     /** The TCP port the server listens to. */
-    private static int PORT = 3142;
+    private static int PORT = 6432;
 
     /** The TCP server socket used to receive data. */
     private ServerSocket tcpServerSocket;
     /** States the server running. */
     private boolean running = true;
+    private final LadenService ladenService;
 
-    private Laden subscriber;
 
     /**
      * Default constructor that creates, i.e., opens
@@ -57,10 +62,9 @@ public class TCPSocketServer {
      *
      * @throws IOException In case the socket cannot be created.
      */
-    public TCPSocketServer(Laden subscriber) throws IOException {
+    public TCPSocketServer(Laden laden) throws IOException {
         tcpServerSocket = new ServerSocket( PORT );
-        this.subscriber = subscriber;
-        LOGGER.info("Started the TCP socket server at port " + PORT);
+        this.ladenService = new LadenService(laden);
     }
 
     /**
@@ -75,15 +79,20 @@ public class TCPSocketServer {
                 connectionSocket = tcpServerSocket.accept();
                 // Get the continuous input stream from the connection socket.
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+                DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
                 // Print the input stream.
-                this.subscriber.receive(receiveInputStream(inFromClient));
+                printInputStream(inFromClient);
+
+                outToClient.write("HTTP/1.1 200 OK\r\n".getBytes());
+                outToClient.write("\r\n".getBytes());
+                parseRequest(inFromClient.readLine(), outToClient);
+                outToClient.write("\r\n\r\n".getBytes());
+                outToClient.flush();
             } catch (IOException e) {
-                LOGGER.error("Could not receive datagram.\n" + e.getLocalizedMessage());
             } finally {
                 if (connectionSocket != null) {
                     try {
                         connectionSocket.close();
-                        LOGGER.debug("Connection socket closed.");
                     } catch (IOException e) {
                         // Do nothing.
                     }
@@ -98,16 +107,47 @@ public class TCPSocketServer {
      *
      * @param bufferedReader The buffered input stream from the client.
      */
-    private String receiveInputStream(BufferedReader bufferedReader) {
+    private void printInputStream(BufferedReader bufferedReader) {
         try {
             // Read a text-line form the buffer.
             String streamLine = bufferedReader.readLine();
             // Print the packet information.
             System.out.println("Received some information: " + streamLine);
-            return streamLine;
         } catch (IOException e) {
-            LOGGER.error("Could not read from buffered reader.");
-            return "";
+            System.out.println("cant read");
+        }
+    }
+
+    private void parseRequest(String urlPath, DataOutputStream outputStream) throws IOException {
+        String[] tokens = urlPath.split(" ");
+        String endpoint = tokens[1];
+        String[] subTokens = endpoint.split("/");
+        if (endpoint.contains("sensors")){
+            Set<String> sensors = this.ladenService.getAllSensorId();
+            for (String sensor : sensors) {
+                outputStream.write(sensor.getBytes());
+            }
+        }else if (endpoint.contains("inventory")){
+            List<Item> inventory = this.ladenService.getAllItemInInventory();
+            for (Item item : inventory) {
+                outputStream.write(item.getName().getBytes());
+            }
+        }else if (subTokens[0].equalsIgnoreCase("sensor") && subTokens.length >= 2){
+            List<String> sensorData = this.ladenService.getSensorData(subTokens[1]);
+            for (String sensorDatum : sensorData) {
+                outputStream.write(sensorDatum.getBytes());
+            }
+        }else if (subTokens[0].equalsIgnoreCase("history") && subTokens.length == 1){
+            Map<String, List<String>> history = this.ladenService.getAllSensorHistory();
+            StringBuilder sb = new StringBuilder();
+            history.forEach((k,v) ->
+                    sb.append(k).append("\n").append(v).append("\n")
+            );
+            outputStream.write(sb.toString().getBytes());
+        }else if (subTokens[0].equalsIgnoreCase("history") && subTokens.length >= 2){
+            if (subTokens[1].equalsIgnoreCase("size")){
+                outputStream.write(this.ladenService.getAllHistoryLogSize());
+            }
         }
     }
 }
