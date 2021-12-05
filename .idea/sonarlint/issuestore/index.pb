@@ -45,3 +45,13 @@ B
 docker-compose.yml,3\5\35b8c13cf2eb2a194eada000eb310d65aed53b2a
 _
 /Laden/src/main/java/server/TCPSocketServer.java,b\3\b36f8c6a4ecfd6be84cd58b38a2937634fad02b8
+ˆ
+XLaden/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst,5\8\58bf0999d76aa1c7044107f62169d0b24db8855f
+F
+docker build sensor.sh,2\e\2e029b017f123647cbe49343425c745184acadb7
+E
+docker build laden.sh,d\1\d1077da892667c130885de46b3c7eef1ed11fbff
+D
+docker compose up.sh,0\5\05f0d5ee5128113bbc14f8d73ae5bb04033a7982
+]
+-Laden/src/main/java/service/LadenService.java,0\e\0e7ef01c5b0c39e091e9369b3c7694216638cb07

@@ -87,7 +87,7 @@ public class TCPSocketServer {
                 // Get the continuous input stream from the connection socket.
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
                 DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-                // Print the input stream.
+
                 outToClient.write("HTTP/1.1 200 OK\r\n".getBytes());
                 outToClient.write("\r\n".getBytes());
                 parseRequest(inFromClient.readLine(), outToClient);
@@ -147,7 +147,7 @@ public class TCPSocketServer {
         if (endpoint.contains("sensors")) {
             Set<String> sensors = this.ladenService.getAllSensorId();
             for (String sensor : sensors) {
-                outputStream.write(sensor.getBytes());
+                outputStream.write((sensor + " ").getBytes());
             }
         } else if (endpoint.contains("inventory")) {
             List<Item> inventory = this.ladenService.getAllItemInInventory();

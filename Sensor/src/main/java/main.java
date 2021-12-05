@@ -9,8 +9,6 @@ public class main {
     public static void main(String[] args) throws InterruptedException, IOException {
         ClientCliParser.parse(args);
         Sensor sensor = new Sensor();
-
-        System.out.println("Scanning an Item with sensor id: " + sensor.getId());
-        sensor.simulate();
+        sensor.simulate(2);
     }
 }

@@ -5,6 +5,7 @@ services:
     container_name: laden
     ports:
     - 6543/udp
+    - 6432/tcp
   sensor:
     image: sensor:1.0
     depends_on:

@@ -1,17 +1,17 @@
 
 0
 java:S3457k"Not enough arguments.(±ã¯§üÿÿÿÿ
-G
-java:S1481")Remove this unused "port" local variable.(»ò†Ê8…×†˜Ó/
-Z	java:S106X"9Replace this use of System.out or System.err by a logger.(î—Œøÿÿÿÿ8çéšÖ/
 Y	java:S125‡"<This block of commented-out lines of code should be removed.(Îéñ8…×†˜Ó/
-0
-java:S3457i"Not enough arguments.(‘¹¥üÿÿÿÿ
-Z	java:S106Y"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ8È°·›Ö/
-V
-java:S1854"8Remove this useless assignment to local variable "port".(»ò†Ê8…×†˜Ó/
-X	java:S125\"<This block of commented-out lines of code should be removed.(ÿş ß8–ˆ¹›Ö/
 X
 java:S1854€";Remove this useless assignment to local variable "address".(ÆíÑ8…×†˜Ó/
+X	java:S125\"<This block of commented-out lines of code should be removed.(ÿş ß8–ˆ¹›Ö/
+0
+java:S3457i"Not enough arguments.(‘¹¥üÿÿÿÿ
+G
+java:S1481")Remove this unused "port" local variable.(»ò†Ê8…×†˜Ó/
 I
 java:S1481€",Remove this unused "address" local variable.(ÆíÑ8…×†˜Ó/
+V
+java:S1854"8Remove this useless assignment to local variable "port".(»ò†Ê8…×†˜Ó/
+Z	java:S106Y"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ8È°·›Ö/
+U	java:S106X"9Replace this use of System.out or System.err by a logger.(Îî›‚8ù¯¸¬×/
