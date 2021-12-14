@@ -10,10 +10,7 @@ import pojo.ItemList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -24,6 +21,7 @@ public class Sensor {
     private Random r;
     private static final int iterationCount = 10000;
 
+
     public Sensor() {
         this.r = new Random();
         this.id = UUID.randomUUID().toString().substring(0, 4);
@@ -31,7 +29,7 @@ public class Sensor {
         this.isIn = r.nextBoolean();
     }
 
-    private Item generateItem() {
+    protected Item generateItem() {
         return new Item(getRandomItemName());
     }
 
@@ -53,7 +51,7 @@ public class Sensor {
 //        writeLog("Sensor " + id.substring(0,4) + " log", log);
     }
 
-    private String scanItem() throws IOException {
+    public String scanItem() throws IOException {
         if (this.isIn()) {
             Item itemToSend = generateItem();
             Gson gson = new Gson();
@@ -98,4 +96,6 @@ public class Sensor {
         }
 
     }
+
+
 }

@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -126,11 +127,12 @@ public class TCPSocketServer {
     private void parseRequest(String urlPath, DataOutputStream outputStream) throws IOException {
         System.out.println("received: " + urlPath);
 
-        if (urlPath.equalsIgnoreCase("")) {
+        if (urlPath == null) {
+            outputStream.write("404 Not Found".getBytes());
             return;
         }
 
-        if (urlPath == null){
+        if (urlPath.equalsIgnoreCase("")) {
             return;
         }
 
@@ -151,8 +153,9 @@ public class TCPSocketServer {
             }
         } else if (endpoint.contains("inventory")) {
             List<Item> inventory = this.ladenService.getAllItemInInventory();
-            for (Item item : inventory) {
-                outputStream.write((item.getName() + " ").getBytes());
+            Map<Item, Integer> inventorySummary = translateListToMap(inventory);
+            for (Map.Entry<Item, Integer> entry : inventorySummary.entrySet()) {
+                outputStream.write((entry.getKey().getName() + ": " + entry.getValue() + "\n").getBytes());
             }
         } else if (subTokens[1].equalsIgnoreCase("sensor") && subTokens.length >= 3) {
             List<String> sensorData = this.ladenService.getSensorData(subTokens[2]);
@@ -171,13 +174,35 @@ public class TCPSocketServer {
                 String size = Integer.toString(this.ladenService.getAllHistoryLogSize());
                 outputStream.write(("History size: " + size).getBytes());
             }
-        }else if (subTokens[1].equalsIgnoreCase("laden")){
+        } else if (subTokens[1].equalsIgnoreCase("laden")) {
             for (String s : this.ladenService.getLadenLog()) {
                 outputStream.write((s + "\n").getBytes());
             }
+        } else if (subTokens[1].equalsIgnoreCase("stats")) {
+            Map<String, Integer> scanStats = this.ladenService.getScanStats();
+            outputStream.write(("Item Received: " + "\n").getBytes());
+            for (Map.Entry<String, Integer> entry : scanStats.entrySet()) {
+                outputStream.write((entry.getKey() + ": " + entry.getValue() + "\n").getBytes());
+            }
+            outputStream.write(("Item removed: " + "\n").getBytes());
+            Map<String, Integer> removeStats = this.ladenService.getRemoveStats();
+            for (Map.Entry<String, Integer> entry : removeStats.entrySet()) {
+                outputStream.write((entry.getKey() + ": " + entry.getValue() + "\n").getBytes());
+            }
+        } else {
+            outputStream.write("404 Not Found".getBytes());
         }
-        else {
-            outputStream.write("main".getBytes());
+    }
+
+    private Map<Item, Integer> translateListToMap(List<Item> itemList) {
+        Map<Item, Integer> itemMap = new HashMap<>();
+        for (Item item : itemList) {
+            if (!itemMap.containsKey(item)) {
+                itemMap.put(item, 1);
+            } else {
+                itemMap.put(item, itemMap.get(item) + 1);
+            }
         }
+        return itemMap;
     }
 }

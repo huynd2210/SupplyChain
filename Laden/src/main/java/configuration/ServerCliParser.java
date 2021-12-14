@@ -11,8 +11,10 @@ public class ServerCliParser {
     //expect --p for port
     public static void parse(String[] args) {
         if (args.length != 0){
-            ServerCliParameters cliParams = ServerCliParameters.getInstance();
-            cliParams.setPort(args[0]);
+
+
+//            ServerCliParameters cliParams = ServerCliParameters.getInstance();
+//            cliParams.setPort(args[0]);
 
 //        String input = args[0];
 //        String[] tokens = input.split(" ");

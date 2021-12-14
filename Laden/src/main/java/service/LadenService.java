@@ -45,4 +45,12 @@ public class LadenService {
     public List<String> getLadenLog(){
         return this.laden.getLogs();
     }
+
+    public Map<String, Integer> getScanStats(){
+        return this.laden.getScanStats();
+    }
+
+    public Map<String, Integer> getRemoveStats(){
+        return this.laden.getRemoveStats();
+    }
 }

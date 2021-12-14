@@ -2,7 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -14,7 +13,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="DemoCase" target="1.8" />
-      <module name="Laden" target="1.8" />
+      <module name="Laden" target="9" />
       <module name="Sensor" target="9" />
       <module name="SupplyChain" target="1.8" />
     </bytecodeTargetLevel>
