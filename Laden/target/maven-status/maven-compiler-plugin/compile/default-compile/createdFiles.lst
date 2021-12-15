@@ -15,6 +15,7 @@ generated\LadenRPCService$Processor$getInventory.class
 server\TCPSocketServer.class
 generated\LadenRPCService$Client$Factory.class
 generated\LadenRPCService$Processor$ping.class
+Laden\LadenExchangeHelper.class
 configuration\ServerCliParser.class
 generated\ItemNotFoundException$ItemNotFoundExceptionTupleSchemeFactory.class
 generated\LadenRPCService$AsyncClient.class
@@ -71,6 +72,7 @@ generated\LadenRPCService$getInventory_result$getInventory_resultStandardSchemeF
 generated\LadenRPCService$AsyncProcessor$getInventory$1.class
 generated\LadenRPCService$Processor.class
 generated\ItemNotFoundException$ItemNotFoundExceptionStandardSchemeFactory.class
+main$3.class
 generated\LadenRPCService$requestItem_args$requestItem_argsTupleSchemeFactory.class
 server\UDPSocketServer.class
 generated\LadenRPCService$AsyncProcessor$getInventory.class

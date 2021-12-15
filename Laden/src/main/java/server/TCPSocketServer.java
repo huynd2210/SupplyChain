@@ -153,10 +153,20 @@ public class TCPSocketServer {
             }
         } else if (endpoint.contains("inventory")) {
             List<Item> inventory = this.ladenService.getAllItemInInventory();
+            List<Item> rpcInventory = this.ladenService.getAllItemRequestedThroughRPC();
             Map<Item, Integer> inventorySummary = translateListToMap(inventory);
+            Map<Item, Integer> rpcInventorySummary = translateListToMap(rpcInventory);
+
+            outputStream.write(("Total Inventory \n").getBytes());
             for (Map.Entry<Item, Integer> entry : inventorySummary.entrySet()) {
                 outputStream.write((entry.getKey().getName() + ": " + entry.getValue() + "\n").getBytes());
             }
+
+            outputStream.write(("Inventory requested through RPC \n").getBytes());
+            for (Map.Entry<Item, Integer> entry : rpcInventorySummary.entrySet()) {
+                outputStream.write((entry.getKey().getName() + ": " + entry.getValue() + "\n").getBytes());
+            }
+
         } else if (subTokens[1].equalsIgnoreCase("sensor") && subTokens.length >= 3) {
             List<String> sensorData = this.ladenService.getSensorData(subTokens[2]);
             for (String sensorDatum : sensorData) {

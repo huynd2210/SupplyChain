@@ -9,6 +9,7 @@ import pojo.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class LadenRPCServiceImpl implements LadenRPCService.Iface {
 
@@ -34,8 +35,15 @@ public class LadenRPCServiceImpl implements LadenRPCService.Iface {
     @Override
     public ItemRPC requestItem(String name) throws ItemNotFoundException, TException {
         if (this.laden.getInventory().contains(new Item(name))){
-            this.laden.getInventory().remove(new Item(name));
-            return new ItemRPC(this.laden.getInventory().stream().filter(i -> i.getName().equalsIgnoreCase(name)).findFirst().get().getName());
+            Optional<Item> requestedItem = this.laden.getInventory().stream().filter(i -> i.getName().equalsIgnoreCase(name)).findFirst();
+            if (requestedItem.isPresent()){
+                ItemRPC itemRPC = new ItemRPC(requestedItem.get().getName());
+                this.laden.getInventory().remove(new Item(name));
+                return itemRPC;
+            }else{
+                throw new ItemNotFoundException(400 ,"WTF, very unexpected behavior occurred, probably Item hashing not working");
+            }
+
         }
         throw new ItemNotFoundException(404, "item not found");
     }

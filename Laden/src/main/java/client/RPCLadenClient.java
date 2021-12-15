@@ -26,14 +26,11 @@ public class RPCLadenClient {
             transport.open();
 
             TProtocol protocol = new TBinaryProtocol(transport);
-//            CalculatorService.Client client = new CalculatorService.Client(protocol);
 
             LadenRPCService.Client client = new LadenRPCService.Client(protocol);
 
             if (client.ping()) {
-                System.out.println("Calling remote method");
                 resolveRequestMethod(methodName, client, param);
-                System.out.println("Done");
                 transport.close();
                 return true;
             }else{

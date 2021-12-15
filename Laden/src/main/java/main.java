@@ -5,7 +5,7 @@ import org.apache.thrift.transport.TTransportException;
 import java.io.IOException;
 
 public class main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 //        ServerCliParser.parse(args);
         Laden laden = new Laden();
 
@@ -37,11 +37,13 @@ public class main {
         tcp.start();
         rpc.start();
 
-        Laden ladenSender = new Laden();
-        //start server
-        String argsAddress = args[0];
-        laden.getRpcLadenClient().call(argsAddress, 9999, "acb", "asdsds");
-        
+        if (args == null || args.length == 0 || args[0] == null || args[0].equalsIgnoreCase("")){
+
+        }else{
+            laden.simulateLadenExchanges(args[0]);
+        }
+
+
 
     }
 }

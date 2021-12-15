@@ -24,6 +24,10 @@ public class LadenService {
         return laden.getInventory();
     }
 
+    public List<Item> getAllItemRequestedThroughRPC(){
+        return laden.getInventoryRPC();
+    }
+
     public List<String> getSensorData(String sensorId){
         if(this.laden.getSensorHistoryData().containsKey(sensorId)){
             return this.laden.getSensorHistoryData().get(sensorId);

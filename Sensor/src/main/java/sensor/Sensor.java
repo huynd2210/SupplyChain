@@ -38,20 +38,20 @@ public class Sensor {
         return ItemList.list.get(itemIndex);
     }
 
-    public void simulate(int simulationSpeed) throws InterruptedException, IOException {
+    public void simulate(int simulationSpeed, String ladenAddress) throws InterruptedException, IOException {
         System.out.println("Simulating sensor with id: " + this.id);
         int i = 0;
         List<String> log = new ArrayList<>();
         while (i < iterationCount) {
             this.isIn = r.nextBoolean();
             Thread.sleep(1000 / simulationSpeed);
-            log.add(scanItem());
+            log.add(scanItem(ladenAddress));
             i++;
         }
 //        writeLog("Sensor " + id.substring(0,4) + " log", log);
     }
 
-    public String scanItem() throws IOException {
+    public String scanItem(String ladenAddress) throws IOException {
         if (this.isIn()) {
             Item itemToSend = generateItem();
             Gson gson = new Gson();
@@ -61,14 +61,14 @@ public class Sensor {
                     this.id;
             String scanLog = "Scanning item : " + itemToSend.getName();
             System.out.println("Scanning item : " + itemToSend.getName());
-            udpSocket.sendMsgCustomDefault(data);
+            udpSocket.sendMsgCustomDefault(data, ladenAddress);
             return scanLog;
         } else {
             String itemName = getRandomItemName();
             String data = "remove$" + itemName + "$" + this.id;
             String removeLog = "Removing item: " + itemName;
             System.out.println("Removing item: " + itemName + " from storage");
-            udpSocket.sendMsgCustomDefault(data);
+            udpSocket.sendMsgCustomDefault(data, ladenAddress);
             return removeLog;
         }
     }

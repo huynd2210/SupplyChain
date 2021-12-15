@@ -1,15 +1,31 @@
 version: '3.3'
 services:
-  laden:
+  laden-1:
     image: laden:1.0
-    container_name: laden
+    container_name: laden-1
     ports:
     - 6543/udp
     - 6432/tcp
-
-  sensor:
-    image: sensor:1.0
+  laden-2:
+    image: laden:1.0
+    container_name: laden-2
+    command: laden-1
     depends_on:
-      - laden
+      - laden-1
+    ports:
+      - 6543/udp
+      - 6432/tcp
+  sensor-laden-1:
+    image: sensor:1.0
+    command: laden-1
+    depends_on:
+      - laden-1
+    deploy:
+      replicas: 5
+  sensor-laden-2:
+    image: sensor:1.0
+    command: laden-2
+    depends_on:
+      - laden-2
     deploy:
       replicas: 5
