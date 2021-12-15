@@ -61,17 +61,20 @@ public class Laden {
     }
 
     public void simulateLadenExchanges(String target) throws InterruptedException {
+        Thread.sleep(1000);
         LadenExchangeHelper helper = new LadenExchangeHelper(target, this.rpcLadenClient);
         int iterationCount = 0;
         final int maxItCount = 500;
         while(iterationCount <= maxItCount){
-            Item requestedItem = new Item(helper.requestForItem().getName());
-            this.inventory.add(requestedItem);
-            this.inventoryRPC.add(requestedItem);
-            Thread.sleep(1000);
-            iterationCount++;
+            ItemRPC itemRPC = helper.requestForItem();
+            if (itemRPC != null){
+                Item requestedItem = new Item(itemRPC.getName());
+                this.inventory.add(requestedItem);
+                this.inventoryRPC.add(requestedItem);
+                Thread.sleep(1000);
+                iterationCount++;
+            }
         }
-
     }
 
     private void processRequest(String data) {
