@@ -4,6 +4,7 @@ import client.RPCLadenClient;
 import com.google.gson.Gson;
 import generated.ItemRPC;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.thrift.transport.TTransportException;
 import pojo.Item;
 import pojo.ItemList;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Getter
+@Setter
 public class Laden {
     private UDPSocketServer udpSocketServer;
     private TCPSocketServer tcpSocketServer;
@@ -87,7 +89,7 @@ public class Laden {
         }
     }
 
-    private void parseRemoveRequest(String[] tokens) {
+    protected String parseRemoveRequest(String[] tokens) {
         boolean isFound = false;
         for (int i = 0; i < this.getInventory().size(); i++) {
             if (this.getInventory().get(i).getName().equalsIgnoreCase(tokens[1])) {
@@ -106,7 +108,9 @@ public class Laden {
             System.out.println(failedRemoveLog);
             this.logs.add(failedRemoveLog);
             addToHistory(tokens[2], "Tried to remove item " + tokens[1] + " but not found in inventory");
+            return "Tried to remove item " + tokens[1] + " but not found in inventory";
         }
+        return "Removing item: " + tokens[1] + " as requested by sensor " + tokens[2] + " current inventory size: " + this.getInventory().size();
     }
 
     private void parseSendRequest(String[] tokens) {
@@ -118,7 +122,7 @@ public class Laden {
         System.out.println(sendLog);
     }
 
-    private void addToHistory(String sensorId, String message) {
+    protected void addToHistory(String sensorId, String message) {
         if (this.sensorHistoryData.containsKey(sensorId)) {
             this.sensorHistoryData.get(sensorId).add(message);
         } else {
@@ -128,7 +132,7 @@ public class Laden {
         }
     }
 
-    private void addFrequency(String itemName, boolean isScanStat) {
+    protected void addFrequency(String itemName, boolean isScanStat) {
         if (isScanStat) {
             if (!this.scanStats.containsKey(itemName)) {
                 this.scanStats.put(itemName, 1);
