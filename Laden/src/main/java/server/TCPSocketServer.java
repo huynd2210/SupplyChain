@@ -157,12 +157,12 @@ public class TCPSocketServer {
             Map<Item, Integer> inventorySummary = translateListToMap(inventory);
             Map<Item, Integer> rpcInventorySummary = translateListToMap(rpcInventory);
 
-            outputStream.write(("Total Inventory \n").getBytes());
+            outputStream.write(("Current Inventory \n").getBytes());
             for (Map.Entry<Item, Integer> entry : inventorySummary.entrySet()) {
                 outputStream.write((entry.getKey().getName() + ": " + entry.getValue() + "\n").getBytes());
             }
 
-            outputStream.write(("Inventory requested through RPC \n").getBytes());
+            outputStream.write(("Items received from RPC \n").getBytes());
             for (Map.Entry<Item, Integer> entry : rpcInventorySummary.entrySet()) {
                 outputStream.write((entry.getKey().getName() + ": " + entry.getValue() + "\n").getBytes());
             }
@@ -190,10 +190,20 @@ public class TCPSocketServer {
             }
         } else if (subTokens[1].equalsIgnoreCase("stats")) {
             Map<String, Integer> scanStats = this.ladenService.getScanStats();
-            outputStream.write(("Item Received: " + "\n").getBytes());
+            List<Item> rpcInventory = this.ladenService.getAllItemRequestedThroughRPC();
+            Map<Item, Integer> rpcInventorySummary = translateListToMap(rpcInventory);
+
+            outputStream.write(("Item received from sensors: " + "\n").getBytes());
             for (Map.Entry<String, Integer> entry : scanStats.entrySet()) {
                 outputStream.write((entry.getKey() + ": " + entry.getValue() + "\n").getBytes());
             }
+            outputStream.write(("\n").getBytes());
+
+            outputStream.write(("Item received from RPC: " + "\n").getBytes());
+            for (Map.Entry<Item, Integer> entry : rpcInventorySummary.entrySet()) {
+                outputStream.write((entry.getKey().getName() + ": " + entry.getValue() + "\n").getBytes());
+            }
+            outputStream.write(("\n").getBytes());
             outputStream.write(("Item removed: " + "\n").getBytes());
             Map<String, Integer> removeStats = this.ladenService.getRemoveStats();
             for (Map.Entry<String, Integer> entry : removeStats.entrySet()) {
@@ -215,4 +225,5 @@ public class TCPSocketServer {
         }
         return itemMap;
     }
+
 }
