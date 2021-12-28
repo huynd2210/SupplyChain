@@ -16,11 +16,10 @@ import java.util.*;
 @AllArgsConstructor
 public class Sensor {
     private String id;
-    private UDPSocketClient udpSocket;
+    protected UDPSocketClient udpSocket;
     private boolean isIn;
     private Random r;
     private static final int iterationCount = 10000;
-
 
     public Sensor() {
         this.r = new Random();

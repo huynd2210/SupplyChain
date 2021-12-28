@@ -8,7 +8,7 @@ exception ItemNotFoundException{
 }
 
 service LadenRPCService{
-    list<ItemRPC> getInventory(),
-    ItemRPC requestItem(1:string name) throws (1:ItemNotFoundException e),
+    list<ItemRPC> getInventory(), //Request the current state of the target laden
+    ItemRPC requestItem(1:string name) throws (1:ItemNotFoundException e), //Request Item from another laden
     bool ping()
 }

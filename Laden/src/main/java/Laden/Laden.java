@@ -20,10 +20,10 @@ import java.util.*;
 public class Laden {
     private UDPSocketServer udpSocketServer;
     private TCPSocketServer tcpSocketServer;
-    private RPCLadenServer rpcLadenServer;
-    private RPCLadenClient rpcLadenClient;
-    private List<Item> inventory;
-    private List<Item> inventoryRPC;
+    protected RPCLadenServer rpcLadenServer;
+    protected RPCLadenClient rpcLadenClient;
+    protected List<Item> inventory;
+    protected List<Item> inventoryRPC;
     private List<String> logs;
     private Map<String, List<String>> sensorHistoryData;
     private Map<String, Integer> scanStats;
@@ -79,7 +79,7 @@ public class Laden {
         }
     }
 
-    private void processRequest(String data) {
+    protected void processRequest(String data) {
         String[] tokens = data.split("\\$");
 
         if (tokens[0].equalsIgnoreCase("send")) {
@@ -119,7 +119,7 @@ public class Laden {
         this.logs.add(sendLog);
         addToHistory(tokens[2], "Scanning item : " + tokens[1]);
         addFrequency(tokens[1], true);
-        System.out.println(sendLog);
+//        System.out.println(sendLog);
     }
 
     protected void addToHistory(String sensorId, String message) {

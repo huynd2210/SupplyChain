@@ -14,6 +14,7 @@ import java.util.List;
 public class RPCLadenClient {
     public List<ItemRPC> requestedInventory;
     public ItemRPC requestedItem;
+    public int totalRoundTripTimeSum = 0;
 
     public RPCLadenClient() {
         this.requestedInventory = new ArrayList<>();
@@ -30,7 +31,10 @@ public class RPCLadenClient {
             LadenRPCService.Client client = new LadenRPCService.Client(protocol);
 
             if (client.ping()) {
+                long startTrip = System.currentTimeMillis();
                 resolveRequestMethod(methodName, client, param);
+                long endTrip = System.currentTimeMillis();
+                this.totalRoundTripTimeSum += (endTrip - startTrip);
                 transport.close();
                 return true;
             }else{

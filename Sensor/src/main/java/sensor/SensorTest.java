@@ -1,51 +1,53 @@
 package sensor;
 
-import client.UDPSocketClient;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import com.google.gson.Gson;
 import pojo.Item;
-import pojo.ItemList;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
+public class SensorTest extends Sensor {
+    private static final int totalAmountOfPackageToSend = 100000;
+    private List<Timestamp> timestampsForEachPacketSent;
 
-public class SensorTest {
-
-    Sensor sensor = new Sensor();
-    UDPSocketClient mockUDP;
-
-    @BeforeEach
-    public void setup() {
-        mockUDP = Mockito.mock(UDPSocketClient.class);
-        doNothing().when(mockUDP).sendMsgCustomDefault(Mockito.anyString(), Mockito.anyString());
+    public SensorTest() {
+        super();
+        this.timestampsForEachPacketSent = new ArrayList<>();
     }
 
-    @Test
-    public void whenGenerateRandomItem_shouldBelongsInItemList(){
-        Item sampleItem = sensor.generateItem();
-        Assertions.assertTrue(ItemList.list.contains(sampleItem.getName()));
+    @Override
+    public void simulate(int simulationSpeed, String ladenAddress) throws InterruptedException, IOException {
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < totalAmountOfPackageToSend; i++) {
+            scanItem(ladenAddress);
+            this.timestampsForEachPacketSent.add(new Timestamp(System.currentTimeMillis()));
+        }
+        long endTime = System.currentTimeMillis();
+        udpSocket.sendMsgCustomDefault("END", ladenAddress);
+        System.out.println(totalAmountOfPackageToSend + " sent, total time taken: " + (endTime - startTime));
+        System.out.println("Average time taken per packet sent: " + ((double)(endTime - startTime) / totalAmountOfPackageToSend));
+        saveTimestampData();
     }
 
-    @Test
-    public void whenSensorRemoveItem_shouldWorks() throws IOException {
-        sensor.setIn(false);
-        sensor.setUdpSocket(mockUDP);
-        String removeLog = sensor.scanItem("sample");
-        Assertions.assertTrue(removeLog.contains("Removing item: "));
+    @Override
+    public String scanItem(String ladenAddress) throws IOException {
+        Item itemToSend = generateItem();
+        Gson gson = new Gson();
+        String data = "send$" +
+                gson.toJson(itemToSend) +
+                "$" +
+                "testID";
+        udpSocket.sendMsgCustomDefault(data, ladenAddress);
+        return "";
     }
 
-    @Test
-    public void whenSensorScanItem_shouldWorks() throws IOException {
-        sensor.setIn(true);
-        sensor.setUdpSocket(mockUDP);
-        String removeLog = sensor.scanItem("sample");
-        Assertions.assertTrue(removeLog.contains("Scanning item : "));
+    public void saveTimestampData() throws IOException {
+        Gson gson = new Gson();
+        String data = gson.toJson(this.timestampsForEachPacketSent);
+        Files.writeString(Paths.get("C:\\Woodchop\\SupplyChain\\Sensor\\src\\main\\resources\\sensorTimestamp.txt"), data);
     }
 }
