@@ -48,8 +48,8 @@ public class main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 //        startSystem(args);
-        runLadenUDPStressTest();
-//        runLadenRPCStressTest(args);
+//        runLadenUDPStressTest();
+        runLadenRPCStressTest(args);
     }
 
 
@@ -69,6 +69,7 @@ public class main {
         if (args.length > 0){
             laden.simulateLadenExchanges(args[0]);
         }else{
+            laden.populateInventory();
             Thread rpc = new Thread(){
                 public void run(){
                     try {

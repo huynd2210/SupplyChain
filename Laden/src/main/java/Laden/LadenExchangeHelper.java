@@ -46,4 +46,19 @@ public class LadenExchangeHelper {
         }
 
     }
+
+
+    public ItemRPC requestForItemForStressTesting(){
+        String param = "sampleItem";
+        Set<String> availableItems = getListOfAvailableItems();
+//        System.out.println("Available items for RPC request: " + availableItems);
+        if (!availableItems.isEmpty()){
+//            System.out.println("Requesting item: " + param);
+            this.rpcLadenClient.call(targetLaden, targetLadenPort, "requestItem", param);
+//            System.out.println("Requested Item through RPC: " + this.rpcLadenClient.requestedItem.name);
+            return this.rpcLadenClient.requestedItem;
+        }else{
+            return null;
+        }
+    }
 }

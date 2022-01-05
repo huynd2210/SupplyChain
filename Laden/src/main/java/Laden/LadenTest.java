@@ -1,27 +1,24 @@
 package Laden;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import generated.ItemRPC;
 import lombok.Getter;
 import pojo.Item;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.LongSummaryStatistics;
 
 @Getter
 public class LadenTest extends Laden {
     private int udpPacketCounts;
     private long startTime;
     private boolean firstPacketReceivedFlag;
-    private static final int totalAmountOfRPCRequests = 100000;
-    private static final int expectedNumberOfPackets = 100000;
+    private static final int totalAmountOfRPCItemsRequested = 100;
+    private static final int expectedNumberOfUDPPackets = 100000;
     private List<Timestamp> timestampsForEachPacketReceived;
 
     public LadenTest() throws IOException {
@@ -31,6 +28,11 @@ public class LadenTest extends Laden {
         this.timestampsForEachPacketReceived = new ArrayList<>();
     }
 
+    public void populateInventory(){
+        for (int i = 0; i < totalAmountOfRPCItemsRequested; i++) {
+            this.inventory.add(new Item("sampleItem"));
+        }
+    }
 
     @Override
     public void receive(String data) {
@@ -39,8 +41,8 @@ public class LadenTest extends Laden {
             System.out.println("Number of packets received: " + udpPacketCounts);
             System.out.println("Total time taken in miliseconds: " + (endTime - startTime));
             System.out.println("Average time taken to process each packets: " + ((double) (endTime - startTime) / this.udpPacketCounts));
-            System.out.println("Amount of package lost: " + (expectedNumberOfPackets - udpPacketCounts));
-            System.out.println("Percentage of package lost: " + (1 - ((double) udpPacketCounts / expectedNumberOfPackets)));
+            System.out.println("Amount of package lost: " + (expectedNumberOfUDPPackets - udpPacketCounts));
+            System.out.println("Percentage of package lost: " + (1 - ((double) udpPacketCounts / expectedNumberOfUDPPackets)));
             try {
                 saveTimestampData();
             } catch (IOException e) {
@@ -76,8 +78,8 @@ public class LadenTest extends Laden {
     public void simulateLadenExchanges(String target) throws InterruptedException {
         LadenExchangeHelper helper = new LadenExchangeHelper(target, this.rpcLadenClient);
         long startTime = System.currentTimeMillis();
-        for (int i = 0; i < totalAmountOfRPCRequests; i++) {
-            ItemRPC itemRPC = helper.requestForItem();
+        for (int i = 0; i < totalAmountOfRPCItemsRequested; i++) {
+            ItemRPC itemRPC = helper.requestForItemForStressTesting();
             if (itemRPC != null) {
                 Item requestedItem = new Item(itemRPC.getName());
                 this.inventory.add(requestedItem);
@@ -85,8 +87,10 @@ public class LadenTest extends Laden {
             }
         }
         long endTime = System.currentTimeMillis();
-        System.out.println("RPC took total of: " + (endTime - startTime));
-        System.out.println("Average RPC roundtrip time: " + rpcLadenClient.totalRoundTripTimeSum / totalAmountOfRPCRequests);
+        System.out.println("RPC took total of: " + ((double)(endTime - startTime)) / 2);
+        System.out.println("Average Item request roundtrip time: " + ((double)rpcLadenClient.totalRoundTripTimeSum / totalAmountOfRPCItemsRequested));
+        System.out.println("Amount of items received: " + this.inventory.size());
+        System.out.println("Amount of loss package: " + (totalAmountOfRPCItemsRequested - this.inventory.size()));
     }
 
     public void saveTimestampData() throws IOException {

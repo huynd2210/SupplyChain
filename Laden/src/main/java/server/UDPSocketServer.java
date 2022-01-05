@@ -87,10 +87,7 @@ public class UDPSocketServer {
             udpSocket.bind(address);
             System.out.println("Started UDP Server");
             System.out.println();
-//            LOGGER.info("Started the UDP socket server at port {} with buffer size {}.",
-//                    ServerCliParameters.getInstance().getPort(),
-//                    buf.length);
-            // Receive packets continuously.
+
             while (running) {
                 // Create the datagram packet structure that contains the received datagram information.
                 DatagramPacket udpPacket = new DatagramPacket(buf, buf.length);
