@@ -3,6 +3,7 @@ main.class
 pojo\Item.class
 configuration\ClientCliParser.class
 configuration\ClientDefaults.class
+sensor\SensorTest.class
 sensor\SensorTestCases.class
 client\UDPSocketClient.class
 configuration\ClientCliParameters.class

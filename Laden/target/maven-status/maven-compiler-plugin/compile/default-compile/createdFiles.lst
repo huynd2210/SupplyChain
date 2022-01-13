@@ -40,6 +40,7 @@ main$4.class
 service\LadenService.class
 generated\ItemRPC$_Fields.class
 generated\LadenRPCService$requestItem_result$requestItem_resultStandardScheme.class
+Laden\LadenTest.class
 generated\ItemRPC$ItemRPCStandardSchemeFactory.class
 generated\LadenRPCService$ping_args.class
 generated\LadenRPCService$ping_result$_Fields.class
