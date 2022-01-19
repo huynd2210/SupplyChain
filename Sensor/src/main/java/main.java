@@ -5,8 +5,6 @@ import java.io.IOException;
 
 public class main {
     public static void simulateSensor(String[] args) throws IOException, InterruptedException {
-        //        ClientCliParser.parse(args);
-
         //which laden to send to
         String ladenAddress = "";
         if (args == null || args[0] == null || args[0].equalsIgnoreCase("")) {
@@ -21,8 +19,8 @@ public class main {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-//        simulateSensor(args);
-        stressTest(args);
+        simulateSensor(args);
+//        stressTest(args);
     }
 
     public static void stressTest(String[] args) throws IOException, InterruptedException {

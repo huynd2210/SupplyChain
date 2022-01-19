@@ -39,6 +39,7 @@ public class LadenRPCServiceImpl implements LadenRPCService.Iface {
             if (requestedItem.isPresent()){
                 ItemRPC itemRPC = new ItemRPC(requestedItem.get().getName());
                 this.laden.getInventory().remove(new Item(name));
+                this.laden.addFrequency(itemRPC.name, false);
                 return itemRPC;
             }else{
                 throw new ItemNotFoundException(400 ,"WTF, very unexpected behavior occurred, probably Item hashing not working");

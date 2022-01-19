@@ -17,8 +17,8 @@ public class LadenTest extends Laden {
     private int udpPacketCounts;
     private long startTime;
     private boolean firstPacketReceivedFlag;
-    private static final int totalAmountOfRPCItemsRequested = 100;
-    private static final int expectedNumberOfUDPPackets = 100000;
+    private static final int totalAmountOfRPCItemsRequested = 15000;
+    private static final int expectedNumberOfUDPPackets = 50000;
     private List<Timestamp> timestampsForEachPacketReceived;
 
     public LadenTest() throws IOException {
@@ -38,10 +38,10 @@ public class LadenTest extends Laden {
     public void receive(String data) {
         if (data.equalsIgnoreCase("END")) {
             long endTime = System.currentTimeMillis();
-            System.out.println("Number of packets received: " + udpPacketCounts);
+            System.out.println("Number of packets received: " + (udpPacketCounts - 1));
             System.out.println("Total time taken in miliseconds: " + (endTime - startTime));
             System.out.println("Average time taken to process each packets: " + ((double) (endTime - startTime) / this.udpPacketCounts));
-            System.out.println("Amount of package lost: " + (expectedNumberOfUDPPackets - udpPacketCounts));
+            System.out.println("Amount of package lost: " + (expectedNumberOfUDPPackets - udpPacketCounts + 1));
             System.out.println("Percentage of package lost: " + (1 - ((double) udpPacketCounts / expectedNumberOfUDPPackets)));
             try {
                 saveTimestampData();
@@ -90,7 +90,6 @@ public class LadenTest extends Laden {
         System.out.println("RPC took total of: " + ((double)(endTime - startTime)) / 2);
         System.out.println("Average Item request roundtrip time: " + ((double)rpcLadenClient.totalRoundTripTimeSum / totalAmountOfRPCItemsRequested));
         System.out.println("Amount of items received: " + this.inventory.size());
-        System.out.println("Amount of loss package: " + (totalAmountOfRPCItemsRequested - this.inventory.size()));
     }
 
     public void saveTimestampData() throws IOException {

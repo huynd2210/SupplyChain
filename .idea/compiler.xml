@@ -8,15 +8,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Laden" />
-        <module name="DemoCase" />
+        <module name="SupplyChainMonitor" />
         <module name="Sensor" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="DemoCase" target="1.8" />
       <module name="Laden" target="11" />
       <module name="Sensor" target="11" />
       <module name="SupplyChain" target="1.8" />
+      <module name="SupplyChainMonitor" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

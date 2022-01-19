@@ -11,9 +11,12 @@ import pojo.ItemList;
 import server.RPCLadenServer;
 import server.TCPSocketServer;
 import server.UDPSocketServer;
+import service.Consumer;
+import service.Publisher;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 @Getter
 @Setter
@@ -22,28 +25,39 @@ public class Laden {
     private TCPSocketServer tcpSocketServer;
     protected RPCLadenServer rpcLadenServer;
     protected RPCLadenClient rpcLadenClient;
+    protected List<String> connectedLaden;
     protected List<Item> inventory;
     protected List<Item> inventoryRPC;
     private List<String> logs;
     private Map<String, List<String>> sensorHistoryData;
     private Map<String, Integer> scanStats;
     private Map<String, Integer> removeStats;
+    public Publisher publisher;
+    private Consumer consumer;
     private Gson gson;
     private String id;
+    private final String queueName = "monitor";
 
     public Laden() throws IOException {
         this.udpSocketServer = new UDPSocketServer(this);
         this.tcpSocketServer = new TCPSocketServer(this);
         this.rpcLadenClient = new RPCLadenClient();
         this.rpcLadenServer = new RPCLadenServer(this);
+        this.connectedLaden = new ArrayList<>();
         this.inventory = new ArrayList<>();
         this.inventoryRPC = new ArrayList<>();
         this.logs = new ArrayList<>();
         this.sensorHistoryData = new HashMap<>();
+        this.publisher = new Publisher();
+        this.consumer = new Consumer();
         this.gson = new Gson();
         this.id = UUID.randomUUID().toString().substring(0, 4);
         this.scanStats = new HashMap<>();
         this.removeStats = new HashMap<>();
+    }
+
+    public void addConnectedLaden(String[] connectedLaden) {
+        this.connectedLaden.addAll(Arrays.asList(connectedLaden));
     }
 
     public void runUDPServer() {
@@ -67,16 +81,35 @@ public class Laden {
         LadenExchangeHelper helper = new LadenExchangeHelper(target, this.rpcLadenClient);
         int iterationCount = 0;
         final int maxItCount = 500;
-        while(iterationCount <= maxItCount){
+        while (iterationCount <= maxItCount) {
             ItemRPC itemRPC = helper.requestForItem();
-            if (itemRPC != null){
+            if (itemRPC != null) {
                 Item requestedItem = new Item(itemRPC.getName());
                 this.inventory.add(requestedItem);
                 this.inventoryRPC.add(requestedItem);
+                this.addFrequency(requestedItem.getName(), true);
                 Thread.sleep(1000);
                 iterationCount++;
             }
         }
+    }
+
+    public void publishDataToMonitor(String host, String queueName) throws IOException, TimeoutException, InterruptedException {
+        while (true) {
+            System.out.println("---------------------------------------");
+            this.publisher.publish(host, queueName, packDataForMonitor());
+            Thread.sleep(5000);
+        }
+    }
+
+    protected String packDataForMonitor() {
+        return "Laden: " + this.id + "\n" +
+                "Number of Sensors: " + this.sensorHistoryData.keySet().size() + "\n" +
+                "List of Sensors " + this.sensorHistoryData.keySet() + "\n" +
+                "Inventory: " + getInventoryCount() + "\n" +
+                "Incoming Item history: " + scanStats + "\n" +
+                "Outgoing Item history: " + removeStats + "\n" +
+                "Connected Laden: " + connectedLaden + "\n";
     }
 
     protected void processRequest(String data) {
@@ -132,7 +165,7 @@ public class Laden {
         }
     }
 
-    protected void addFrequency(String itemName, boolean isScanStat) {
+    public void addFrequency(String itemName, boolean isScanStat) {
         if (isScanStat) {
             if (!this.scanStats.containsKey(itemName)) {
                 this.scanStats.put(itemName, 1);
@@ -146,5 +179,14 @@ public class Laden {
                 this.removeStats.put(itemName, removeStats.get(itemName) + 1);
             }
         }
+    }
+
+    private Map<String, Integer> getInventoryCount() {
+        Map<String, Integer> inventoryCount = new HashMap<>();
+        List<Item> totalInventory = new ArrayList<>(this.inventory);
+        for (String s : ItemList.list) {
+            inventoryCount.put(s, Collections.frequency(totalInventory, new Item(s)));
+        }
+        return inventoryCount;
     }
 }

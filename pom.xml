@@ -12,7 +12,7 @@
     <modules>
         <module>Laden</module>
         <module>Sensor</module>
-        <module>DemoCase</module>
+        <module>SupplyChainMonitor</module>
     </modules>
 
     <dependencies>
@@ -36,7 +36,11 @@
             <artifactId>fluent-hc</artifactId>
             <version>4.5.13</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.14.1</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>

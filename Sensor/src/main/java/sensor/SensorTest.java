@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SensorTest extends Sensor {
-    private static final int totalAmountOfPackageToSend = 1000;
+    private static final int totalAmountOfPackageToSend = 50000;
     private List<Timestamp> timestampsForEachPacketSent;
 
     public SensorTest() {

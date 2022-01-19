@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DemoCase/DemoCase.iml" filepath="$PROJECT_DIR$/DemoCase/DemoCase.iml" />
       <module fileurl="file://$PROJECT_DIR$/Laden/Laden.iml" filepath="$PROJECT_DIR$/Laden/Laden.iml" />
       <module fileurl="file://$PROJECT_DIR$/Sensor/Sensor.iml" filepath="$PROJECT_DIR$/Sensor/Sensor.iml" />
       <module fileurl="file://$PROJECT_DIR$/SupplyChain.iml" filepath="$PROJECT_DIR$/SupplyChain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SupplyChainMonitor/SupplyChainMonitor.iml" filepath="$PROJECT_DIR$/SupplyChainMonitor/SupplyChainMonitor.iml" />
     </modules>
   </component>
 </project>

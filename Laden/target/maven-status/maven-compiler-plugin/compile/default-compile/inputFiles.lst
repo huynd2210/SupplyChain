@@ -3,9 +3,11 @@ C:\Woodchop\SupplyChain\Laden\src\main\java\configuration\ServerDefaults.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\Laden\Laden.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\service\LadenService.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\generated\ItemRPC.java
+C:\Woodchop\SupplyChain\Laden\src\main\java\service\Consumer.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\generated\ItemNotFoundException.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\Laden\LadenExchangeHelper.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\server\TCPSocketServer.java
+C:\Woodchop\SupplyChain\Laden\src\main\java\service\Publisher.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\configuration\ServerCliParameters.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\server\RPCLadenServer.java
 C:\Woodchop\SupplyChain\Laden\src\main\java\Laden\LadenTestCases.java
