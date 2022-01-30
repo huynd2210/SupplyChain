@@ -4,6 +4,10 @@ import lombok.SneakyThrows;
 import org.apache.thrift.transport.TTransportException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class main {
     public static void startSystem(String[] args) throws IOException, InterruptedException {
@@ -55,11 +59,24 @@ public class main {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        startSystem(args);
+//        startSystem(args);
 
+        runRabbitmqStressTest();
 //        runLadenUDPStressTest();
 //        runLadenRPCStressTest(args);
 //        runTCPServerForTesting();
+    }
+
+    private static void runRabbitmqStressTest() throws IOException {
+        LadenTest laden = new LadenTest();
+        laden.populateInventory(30000);
+        Thread publisher = new Thread() {
+            @SneakyThrows
+            public void run() {
+                laden.publishDataToMonitor("rabbitmq", "monitor");
+            }
+        };
+        publisher.start();
     }
 
     private static void runTCPServerForTesting() throws IOException {
@@ -90,7 +107,7 @@ public class main {
         if (args.length > 0) {
             laden.simulateLadenExchanges(args[0]);
         } else {
-            laden.populateInventory();
+            laden.populateInventory(15000);
             Thread rpc = new Thread() {
                 public void run() {
                     try {

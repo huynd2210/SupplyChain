@@ -15,13 +15,13 @@ public class Publisher {
     }
 
     public void publish(String host, String queueName, String message) throws IOException, TimeoutException {
-        System.out.println("Publishing message");
+//        System.out.println("Publishing message");
         connectionFactory.setHost(host);
         try (Connection connection = connectionFactory.newConnection();
             Channel channel = connection.createChannel()){
             channel.queueDeclare(queueName, false, false, false, null);
             channel.basicPublish("", queueName, null, message.getBytes(StandardCharsets.UTF_8));
-            System.out.println("Message Published");
+//            System.out.println("Message Published");
         }
     }
 }

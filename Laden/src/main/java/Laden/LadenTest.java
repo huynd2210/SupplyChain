@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @Getter
 public class LadenTest extends Laden {
@@ -20,6 +21,7 @@ public class LadenTest extends Laden {
     private static final int totalAmountOfRPCItemsRequested = 15000;
     private static final int expectedNumberOfUDPPackets = 50000;
     private List<Timestamp> timestampsForEachPacketReceived;
+    private static final int totalAmountOfMessageToPublish = 100;
 
     public LadenTest() throws IOException {
         super();
@@ -28,8 +30,8 @@ public class LadenTest extends Laden {
         this.timestampsForEachPacketReceived = new ArrayList<>();
     }
 
-    public void populateInventory(){
-        for (int i = 0; i < totalAmountOfRPCItemsRequested; i++) {
+    public void populateInventory(int amountOfItems){
+        for (int i = 0; i < amountOfItems; i++) {
             this.inventory.add(new Item("sampleItem"));
         }
     }
@@ -72,6 +74,17 @@ public class LadenTest extends Laden {
 
         this.udpPacketCounts++;
         super.receive(data);
+    }
+
+    @Override
+    public void publishDataToMonitor(String host, String queueName) throws IOException, TimeoutException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < totalAmountOfMessageToPublish; i++){
+            this.publisher.publish(host, queueName, packDataForMonitor());
+            System.out.println("-----------------");
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("Total time taken to publish " + totalAmountOfMessageToPublish + ": " + (endTime - startTime));
     }
 
     @Override
