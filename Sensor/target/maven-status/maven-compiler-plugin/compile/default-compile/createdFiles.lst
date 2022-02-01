@@ -1,7 +1,6 @@
 sensor\Sensor.class
 main.class
 pojo\Item.class
-configuration\ClientCliParser.class
 configuration\ClientDefaults.class
 sensor\SensorTest.class
 sensor\SensorTestCases.class

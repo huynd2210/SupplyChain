@@ -100,7 +100,7 @@ services:
       rabbitmq:
         condition: service_healthy
     deploy:
-      replicas: 10
+      replicas: 2
     networks:
       - rabbitmq_network
   sensor-laden-2:
@@ -111,7 +111,7 @@ services:
       rabbitmq:
         condition: service_healthy
     deploy:
-      replicas: 10
+      replicas: 2
     networks:
       - rabbitmq_network
   sensor-laden-3:
@@ -122,31 +122,10 @@ services:
       rabbitmq:
         condition: service_healthy
     deploy:
-      replicas: 10
+      replicas: 2
     networks:
       - rabbitmq_network
-  sensor-laden-4:
-    image: sensor:1.0
-    command: laden-4
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    deploy:
-      replicas: 10
-    networks:
-      - rabbitmq_network
-  sensor-laden-5:
-    image: sensor:1.0
-    command: laden-5
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    deploy:
-      replicas: 10
-    networks:
-      - rabbitmq_network
+
 networks:
   rabbitmq_network:
     driver: bridge
