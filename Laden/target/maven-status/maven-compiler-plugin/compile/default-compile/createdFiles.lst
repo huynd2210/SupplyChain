@@ -45,6 +45,7 @@ generated\LadenRPCService$AsyncProcessor$getInventory.class
 generated\LadenRPCService$ping_args$ping_argsTupleSchemeFactory.class
 generated\ItemNotFoundException$1.class
 client\RPCLadenClient.class
+main$9.class
 generated\LadenRPCService$ping_result$ping_resultStandardScheme.class
 generated\ItemRPC$ItemRPCTupleSchemeFactory.class
 generated\LadenRPCService$getInventory_result.class

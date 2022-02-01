@@ -19,8 +19,8 @@ public class main {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        simulateSensor(args);
-//        stressTest(args);
+//        simulateSensor(args);
+        stressTest(args);
     }
 
     public static void stressTest(String[] args) throws IOException, InterruptedException {

@@ -19,18 +19,21 @@ public class LadenTest extends Laden {
     private long startTime;
     private boolean firstPacketReceivedFlag;
     private static final int totalAmountOfRPCItemsRequested = 15000;
-    private static final int expectedNumberOfUDPPackets = 50000;
+    private static final int expectedNumberOfUDPPackets = 700000;
     private List<Timestamp> timestampsForEachPacketReceived;
-    private static final int totalAmountOfMessageToPublish = 100;
+    private static final int totalAmountOfMessageToPublish = 20000;
+    private static final int numberOfExpectedSensors = 10;
+    private int receivedEndPackets;
 
     public LadenTest() throws IOException {
         super();
         this.udpPacketCounts = 0;
         this.firstPacketReceivedFlag = false;
         this.timestampsForEachPacketReceived = new ArrayList<>();
+        this.receivedEndPackets = 0;
     }
 
-    public void populateInventory(int amountOfItems){
+    public void populateInventory(int amountOfItems) {
         for (int i = 0; i < amountOfItems; i++) {
             this.inventory.add(new Item("sampleItem"));
         }
@@ -38,7 +41,11 @@ public class LadenTest extends Laden {
 
     @Override
     public void receive(String data) {
-        if (data.equalsIgnoreCase("END")) {
+        if (data.equalsIgnoreCase("END")){
+            this.receivedEndPackets++;
+        }
+
+        if (this.receivedEndPackets == numberOfExpectedSensors) {
             long endTime = System.currentTimeMillis();
             System.out.println("Number of packets received: " + (udpPacketCounts - 1));
             System.out.println("Total time taken in miliseconds: " + (endTime - startTime));
@@ -79,12 +86,12 @@ public class LadenTest extends Laden {
     @Override
     public void publishDataToMonitor(String host, String queueName) throws IOException, TimeoutException, InterruptedException {
         long startTime = System.currentTimeMillis();
-        for (int i = 0; i < totalAmountOfMessageToPublish; i++){
+        for (int i = 0; i < totalAmountOfMessageToPublish; i++) {
             this.publisher.publish(host, queueName, packDataForMonitor());
-            System.out.println("-----------------");
         }
         long endTime = System.currentTimeMillis();
-        System.out.println("Total time taken to publish " + totalAmountOfMessageToPublish + ": " + (endTime - startTime));
+//        System.out.println("Amount of message published: " + totalAmountOfMessageToPublish);
+//        System.out.println("Total time taken to publish " + totalAmountOfMessageToPublish + ": " + (endTime - startTime));
     }
 
     @Override
@@ -100,14 +107,24 @@ public class LadenTest extends Laden {
             }
         }
         long endTime = System.currentTimeMillis();
-        System.out.println("RPC took total of: " + ((double)(endTime - startTime)) / 2);
-        System.out.println("Average Item request roundtrip time: " + ((double)rpcLadenClient.totalRoundTripTimeSum / totalAmountOfRPCItemsRequested));
-        System.out.println("Amount of items received: " + this.inventory.size());
+//        System.out.println("RPC took total of: " + ((double) (endTime - startTime)) / 2);
+//        System.out.println("Average Item request roundtrip time: " + ((double) rpcLadenClient.totalRoundTripTimeSum / totalAmountOfRPCItemsRequested));
+//        System.out.println("Amount of items received: " + this.inventory.size());
     }
 
     public void saveTimestampData() throws IOException {
         Gson gson = new Gson();
         String data = gson.toJson(this.timestampsForEachPacketReceived);
         Files.writeString(Paths.get("C:\\Woodchop\\SupplyChain\\Laden\\src\\main\\resources\\ladenTimestamp.txt"), data);
+    }
+
+    public void printCurrentStatus() throws InterruptedException {
+        while(true){
+            long endTime = System.currentTimeMillis();
+            System.out.println("Current number of packets received: " + (udpPacketCounts - 1));
+            System.out.println("Total time taken in miliseconds until now: " + (endTime - startTime));
+            System.out.println("Amount of message published: " + totalAmountOfMessageToPublish);
+            Thread.sleep(10000);
+        }
     }
 }

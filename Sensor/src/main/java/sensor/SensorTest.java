@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SensorTest extends Sensor {
-    private static final int totalAmountOfPackageToSend = 50000;
+    private static final int totalAmountOfPackageToSend = 10000;
     private List<Timestamp> timestampsForEachPacketSent;
 
     public SensorTest() {
@@ -23,6 +23,7 @@ public class SensorTest extends Sensor {
     public void simulate(int simulationSpeed, String ladenAddress) throws InterruptedException, IOException {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < totalAmountOfPackageToSend; i++) {
+//            Thread.sleep(0);
             scanItem(ladenAddress);
             this.timestampsForEachPacketSent.add(new Timestamp(System.currentTimeMillis()));
         }

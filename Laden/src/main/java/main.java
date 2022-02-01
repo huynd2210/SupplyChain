@@ -58,10 +58,19 @@ public class main {
 
     }
 
+    public static void stressTestAll(String[] args) throws IOException, InterruptedException {
+        runLadenUDPStressTest();
+        runTCPServerForTesting();
+        runLadenRPCStressTest(args);
+        runRabbitmqStressTest();
+    }
+
     public static void main(String[] args) throws IOException, InterruptedException {
 //        startSystem(args);
 
-        runRabbitmqStressTest();
+        stressTestAll(args);
+
+//        runRabbitmqStressTest();
 //        runLadenUDPStressTest();
 //        runLadenRPCStressTest(args);
 //        runTCPServerForTesting();
@@ -69,7 +78,6 @@ public class main {
 
     private static void runRabbitmqStressTest() throws IOException {
         LadenTest laden = new LadenTest();
-        laden.populateInventory(30000);
         Thread publisher = new Thread() {
             @SneakyThrows
             public void run() {
@@ -99,7 +107,14 @@ public class main {
                 laden.runUDPServer();
             }
         };
+        Thread logs = new Thread(){
+            @SneakyThrows
+            public void run(){
+                laden.printCurrentStatus();
+            }
+        };
         udp.start();
+        logs.start();
     }
 
     public static void runLadenRPCStressTest(String[] args) throws IOException, InterruptedException {
