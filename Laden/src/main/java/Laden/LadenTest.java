@@ -24,6 +24,7 @@ public class LadenTest extends Laden {
     private static final int totalAmountOfMessageToPublish = 20000;
     private static final int numberOfExpectedSensors = 10;
     private int receivedEndPackets;
+    private int numberOfSuccessfulRPC;
 
     public LadenTest() throws IOException {
         super();
@@ -31,6 +32,7 @@ public class LadenTest extends Laden {
         this.firstPacketReceivedFlag = false;
         this.timestampsForEachPacketReceived = new ArrayList<>();
         this.receivedEndPackets = 0;
+        this.numberOfSuccessfulRPC = 0;
     }
 
     public void populateInventory(int amountOfItems) {
@@ -104,6 +106,7 @@ public class LadenTest extends Laden {
                 Item requestedItem = new Item(itemRPC.getName());
                 this.inventory.add(requestedItem);
                 this.inventoryRPC.add(requestedItem);
+                this.numberOfSuccessfulRPC++;
             }
         }
         long endTime = System.currentTimeMillis();
@@ -124,6 +127,7 @@ public class LadenTest extends Laden {
             System.out.println("Current number of packets received: " + (udpPacketCounts - 1));
             System.out.println("Total time taken in miliseconds until now: " + (endTime - startTime));
             System.out.println("Amount of message published: " + totalAmountOfMessageToPublish);
+            System.out.println("Amount of current rpc requests:" + numberOfSuccessfulRPC);
             Thread.sleep(10000);
         }
     }

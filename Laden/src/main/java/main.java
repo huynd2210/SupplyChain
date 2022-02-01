@@ -59,10 +59,18 @@ public class main {
     }
 
     public static void stressTestAll(String[] args) throws IOException, InterruptedException {
-        runLadenUDPStressTest();
-        runTCPServerForTesting();
-        runLadenRPCStressTest(args);
-        runRabbitmqStressTest();
+        LadenTest laden = new LadenTest();
+        runLadenUDPStressTest(laden);
+        runTCPServerForTesting(laden);
+        runLadenRPCStressTest(args, laden);
+        runRabbitmqStressTest(laden);
+        Thread logs = new Thread(){
+            @SneakyThrows
+            public void run(){
+                laden.printCurrentStatus();
+            }
+        };
+        logs.start();
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -76,8 +84,7 @@ public class main {
 //        runTCPServerForTesting();
     }
 
-    private static void runRabbitmqStressTest() throws IOException {
-        LadenTest laden = new LadenTest();
+    private static void runRabbitmqStressTest(LadenTest laden) throws IOException {
         Thread publisher = new Thread() {
             @SneakyThrows
             public void run() {
@@ -87,9 +94,8 @@ public class main {
         publisher.start();
     }
 
-    private static void runTCPServerForTesting() throws IOException {
+    private static void runTCPServerForTesting(LadenTest laden) throws IOException {
         System.out.println("Starting tcp server");
-        Laden laden = new Laden();
         Thread tcp = new Thread() {
             public void run() {
                 laden.runTCPServer();
@@ -99,26 +105,18 @@ public class main {
     }
 
 
-    public static void runLadenUDPStressTest() throws IOException {
-        LadenTest laden = new LadenTest();
+    public static void runLadenUDPStressTest(LadenTest laden) throws IOException {
         System.out.println("Starting Laden Server with id " + laden.getId());
         Thread udp = new Thread() {
             public void run() {
                 laden.runUDPServer();
             }
         };
-        Thread logs = new Thread(){
-            @SneakyThrows
-            public void run(){
-                laden.printCurrentStatus();
-            }
-        };
+
         udp.start();
-        logs.start();
     }
 
-    public static void runLadenRPCStressTest(String[] args) throws IOException, InterruptedException {
-        LadenTest laden = new LadenTest();
+    public static void runLadenRPCStressTest(String[] args, LadenTest laden) throws IOException, InterruptedException {
         if (args.length > 0) {
             laden.simulateLadenExchanges(args[0]);
         } else {

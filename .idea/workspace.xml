@@ -6,32 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="84a975e1-d67f-4698-8361-f2cf25f1de69" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/src/main/java/configuration/ServerCliParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/src/main/java/Laden/LadenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/src/main/java/Laden/LadenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/src/main/java/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/src/main/java/main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Laden/target/Laden-1.0-SNAPSHOT-shaded.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/Laden-1.0-SNAPSHOT-shaded.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Laden/target/Laden-uber.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/Laden-uber.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/Laden/LadenTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/Laden/LadenTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/configuration/ServerCliParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/main$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/main$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/main$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/main$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/main$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main.class" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/classes/main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Laden/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/Laden/LadenTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Laden/target/classes/main.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Laden/target/original-Laden-uber.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Laden/target/original-Laden-uber.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sensor/src/main/java/configuration/ClientCliParser.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Sensor/target/Sensor-1.0-SNAPSHOT-shaded.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor/target/Sensor-1.0-SNAPSHOT-shaded.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sensor/target/Sensor-uber.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor/target/Sensor-uber.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sensor/target/classes/configuration/ClientCliParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sensor/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sensor/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sensor/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sensor/target/original-Sensor-uber.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor/target/original-Sensor-uber.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SupplyChainMonitor/target/SupplyChainMonitor-1.0-SNAPSHOT-shaded.jar" beforeDir="false" afterPath="$PROJECT_DIR$/SupplyChainMonitor/target/SupplyChainMonitor-1.0-SNAPSHOT-shaded.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SupplyChainMonitor/target/SupplyChainMonitor-uber.jar" beforeDir="false" afterPath="$PROJECT_DIR$/SupplyChainMonitor/target/SupplyChainMonitor-uber.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SupplyChainMonitor/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/SupplyChainMonitor/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SupplyChainMonitor/target/original-SupplyChainMonitor-uber.jar" beforeDir="false" afterPath="$PROJECT_DIR$/SupplyChainMonitor/target/original-SupplyChainMonitor-uber.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
